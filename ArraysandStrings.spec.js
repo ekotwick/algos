@@ -1,0 +1,53 @@
+'use strict';
+
+const expect = require('chai').expect;
+
+const path = './ArraysAndStrings';
+
+const isUnique = require(path).isUnique;
+const checkPermutation = require(path).checkPermutation;
+const urlify = require(path).urlify;
+
+
+describe('isUnique', () => {
+
+	it('should determine whether a string has all unique characters', () => {
+		expect(isUnique('')).to.eql(true);
+		expect(isUnique(' ')).to.eql(true);
+		expect(isUnique('  ')).to.eql(false);
+		expect(isUnique('abcdefg')).to.eql(true);
+		expect(isUnique('aabcdeg')).to.eql(false);
+		expect(isUnique('AaBbCcDd')).to.eql(true);
+		expect(isUnique('AAaBbCcDd')).to.eql(false);
+	});
+
+});
+
+describe('checkPermutation', () => {
+
+	it('should determine whether, given two strings, one is a permutation of another', () => {
+		expect(checkPermutation('','')).to.eql(true);
+		expect(checkPermutation(' ','  ')).to.eql(false);
+		expect(checkPermutation('  ','  ')).to.eql(true);
+		expect(checkPermutation('aa','aa')).to.eql(true);
+		expect(checkPermutation('aa','ab')).to.eql(false);
+		expect(checkPermutation('ab','ba')).to.eql(true);
+		expect(checkPermutation('aa','aA')).to.eql(false);
+		expect(checkPermutation('aa ','aa')).to.eql(false);
+		expect(checkPermutation('aa ',' aa')).to.eql(true);
+	});
+});
+
+describe('urlify', () => {
+
+	it('should replace all spaces with "%20"', () => {
+		expect(urlify('')).to.eql(null);
+		expect(urlify(' ')).to.eql('%20');
+		expect(urlify(' a')).to.eql('%20a');
+		expect(urlify('a ')).to.eql('a%20');
+		expect(urlify('a a')).to.eql('a%20a');
+		expect(urlify('a a ')).to.eql('a%20a%20');
+		expect(urlify('a  a ')).to.eql('a%20%20a%20');
+	});
+
+});

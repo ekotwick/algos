@@ -1,0 +1,24 @@
+{
+  "name": "algos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --watch-extensions js *.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ekotwick/algos.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ekotwick/algos/issues"
+  },
+  "homepage": "https://github.com/ekotwick/algos#readme",
+  "dependencies": {
+    "chai": "^4.0.0",
+    "mocha": "^3.4.2"
+  },
+  "devDependencies": {}
+}
