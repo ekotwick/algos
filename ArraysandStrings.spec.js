@@ -4,9 +4,10 @@ const expect = require('chai').expect;
 
 const path = './ArraysAndStrings';
 
+const urlify = require(path).urlify;
 const isUnique = require(path).isUnique;
 const checkPermutation = require(path).checkPermutation;
-const urlify = require(path).urlify;
+const palindromePermutation = require(path).palindromePermutation;
 
 
 describe('isUnique', () => {
@@ -30,8 +31,8 @@ describe('checkPermutation', () => {
 		expect(checkPermutation(' ','  ')).to.eql(false);
 		expect(checkPermutation('  ','  ')).to.eql(true);
 		expect(checkPermutation('aa','aa')).to.eql(true);
-		expect(checkPermutation('aa','ab')).to.eql(false);
 		expect(checkPermutation('ab','ba')).to.eql(true);
+		expect(checkPermutation('aa','ab')).to.eql(false);
 		expect(checkPermutation('aa','aA')).to.eql(false);
 		expect(checkPermutation('aa ','aa')).to.eql(false);
 		expect(checkPermutation('aa ',' aa')).to.eql(true);
@@ -48,6 +49,26 @@ describe('urlify', () => {
 		expect(urlify('a a')).to.eql('a%20a');
 		expect(urlify('a a ')).to.eql('a%20a%20');
 		expect(urlify('a  a ')).to.eql('a%20%20a%20');
+	});
+
+});
+
+describe('palindromePermutation', () => {
+
+	it('should determine whether a given string is a permutation of a palindrome', () => {
+		expect(palindromePermutation('')).to.equal(true);
+		expect(palindromePermutation('a')).to.equal(true);
+		expect(palindromePermutation('aa')).to.equal(true);
+		expect(palindromePermutation('aa ')).to.equal(true);
+		expect(palindromePermutation('aab')).to.equal(true);
+		expect(palindromePermutation('ab')).to.equal(false);
+		expect(palindromePermutation('aa  ')).to.equal(true);
+		expect(palindromePermutation('aab ')).to.equal(true);
+		expect(palindromePermutation('aabb')).to.equal(true);
+		expect(palindromePermutation('aabb ')).to.equal(true);
+		expect(palindromePermutation('aabbc')).to.equal(true);
+		expect(palindromePermutation('aabc')).to.equal(false);
+		expect(palindromePermutation('aabbccde')).to.equal(false);
 	});
 
 });
