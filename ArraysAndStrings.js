@@ -42,7 +42,6 @@ const urlify = str => {
 		if (ch === ' ') return '%20';
 		return ch;
 	}).join('');
-	
 };
 
 const palindromePermutation = str => {
@@ -59,7 +58,76 @@ const palindromePermutation = str => {
 
 	if (oddCharacters.length < 2) return true;
 	return false;
-
 };
 
-module.exports = { isUnique, checkPermutation, urlify, palindromePermutation,  };
+const oneAway = (str1, str2) => {
+	if (str1.length === str2.length) return sameLength(str1, str2);
+	return diffLength(str1, str2);
+};
+
+const sameLength = (s1, s2) => {
+
+	let diffCount = 0;
+
+	for (let i = 0; i < s1.length; i++) {
+		if (s1[i] !== s2[i]) {
+			diffCount++;
+			if (diffCount > 1) return false;
+		}
+	}
+
+	return true;
+};
+
+const diffLength = (s1, s2) => {
+
+	let short = s1.length < s2.length ? s1 : s2;
+	let long = short === s1 ? s2 : s1;
+	let idxS = 0;
+	let idxL = 0;
+
+	while(idxS < short.length || idxL < long.length) {
+		if(short[idxS] !== long[idxL]) {
+			if (idxS !== idxL) return false;
+			idxL++;
+		} else {
+			idxS++;
+			idxL++;
+		}
+	}
+
+	return true;
+};
+
+const stringCompressor = str => {
+
+	let result = '';
+	let i = 0;
+	let currChar = str[i];
+	let count = 0;
+	let isCompressed = false;
+
+	while (i < str.length) {
+
+		if (str[i] === currChar) {
+			count++;
+			i++;
+			if (!isCompressed && count > 1) isCompressed = true;
+		} else {
+			result += currChar;
+			result += count;
+			currChar = str[i];
+			count = 1;
+			i++;
+		}
+
+	}
+	
+	result += currChar;
+	result += count;
+
+	if (isCompressed) return result;
+	return str;
+};
+
+module.exports = { isUnique, checkPermutation, urlify, palindromePermutation, oneAway, stringCompressor };
