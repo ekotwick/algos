@@ -7,6 +7,8 @@ const path = require('./ArraysAndStrings');
 const urlify = path.urlify;
 const oneAway = path.oneAway;
 const isUnique = path.isUnique;
+const zeroMatrix = path.zeroMatrix;
+const stringRotation = path.stringRotation;
 const checkPermutation = path.checkPermutation;
 const stringCompressor = path.stringCompressor;
 const palindromePermutation = path.palindromePermutation;
@@ -101,3 +103,22 @@ describe('stringCompressor', () => {
 		expect(stringCompressor('abca')).to.eql('abca');
 	});
 });
+
+describe('zeroMatrix', () => {
+	it('replaces all rows and columns which contain 0 with rows and columns of 0s', () => {
+		expect(zeroMatrix([[1,1,1],[1,1,1],[1,1,1]])).to.eql([[1,1,1],[1,1,1],[1,1,1]]);
+		expect(zeroMatrix([[0,1,1],[1,1,1],[1,1,1]])).to.eql([[0,0,0],[0,1,1],[0,1,1]]);
+		expect(zeroMatrix([[1,1,1],[1,0,1],[1,1,1]])).to.eql([[1,0,1],[0,0,0],[1,0,1]]);
+		expect(zeroMatrix([[1,1,0],[1,1,1],[0,1,1]])).to.eql([[0,0,0],[0,1,0],[0,0,0]]);
+		expect(zeroMatrix([[0,1,1],[1,0,1],[1,1,0]])).to.eql([[0,0,0],[0,0,0],[0,0,0]]);
+	})
+});
+
+describe('stringRotation', () => {
+	it('should determine whether, given two strings str1 and str2, str2 is a rotation of str1', () => {
+		expect(stringRotation('abc','cab')).to.eql(true);
+		expect(stringRotation('abc','cba')).to.eql(false);
+		expect(stringRotation('abc','abc')).to.eql(false);
+		expect(stringRotation('abc','bca')).to.eql(true);
+	});
+})

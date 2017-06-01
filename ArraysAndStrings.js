@@ -130,4 +130,41 @@ const stringCompressor = str => {
 	return str;
 };
 
-module.exports = { isUnique, checkPermutation, urlify, palindromePermutation, oneAway, stringCompressor };
+const rotateMatrix = matrix => {
+	return matrix;
+};
+
+const zeroMatrix = matrix => {
+
+	const findZeros = matrix => {
+		const rows = new Set();
+		const cols = new Set();
+		for (let col = 0; col < matrix.length; col++) {
+			for (let row = 0; row < matrix.length; row++) {
+				if (matrix[col][row] === 0) {
+					rows.add(row);
+					cols.add(col);
+				}
+			}
+		}
+		return [rows, cols];
+	};
+
+	const [rows, cols] = findZeros(matrix);
+
+	for (let col = 0; col < matrix.length; col++) {
+		for (let row = 0; row < matrix.length; row++) {
+			if (rows.has(row) || cols.has(col)) matrix[col][row] = 0;
+		}
+	}
+
+	return matrix;
+};
+
+const stringRotation = (str1, str2) => {
+	if (str1 === str2) return false;
+	const newString = str1 + str1;
+	return newString.includes(str2);
+}
+
+module.exports = { isUnique, checkPermutation, urlify, palindromePermutation, oneAway, stringCompressor, zeroMatrix, stringRotation };
