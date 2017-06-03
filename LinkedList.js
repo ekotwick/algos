@@ -256,6 +256,26 @@ class SinglyLinkedList {
 		return null;
 	}
 
+	findNode(val) {
+		if (!this.head) return null;
+		let currNode = this.head;
+		while (currNode) {
+			if (currNode.value === val) return currNode;
+			currNode = currNode.next;
+		}
+		return null;
+	}
+
 }
 
-module.exports = { dblLLNode, DoublyLinkedList, sglLLNode, SinglyLinkedList, removeDuplicates, removeDuplicatesWithoutBuffer, findKthNode }
+const deleteMiddle = function(node) {
+	if (node === null || node.next === null || this.head === node) {
+		return null;
+	} else {
+		node.value = node.next.value;
+		node.next = node.next.next;
+		this.length--;
+	}
+} 
+
+module.exports = { dblLLNode, DoublyLinkedList, sglLLNode, SinglyLinkedList, removeDuplicates, removeDuplicatesWithoutBuffer, findKthNode, deleteMiddle };

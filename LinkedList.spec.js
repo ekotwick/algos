@@ -8,6 +8,7 @@ const path = require('./LinkedList');
 const dblLLNode = path.dblLLNode;
 const sglLLNode = path.sglLLNode;
 const findKthNode = path.findKthNode;
+const deleteMiddle = path.deleteMiddle;
 const DoublyLinkedList = path.DoublyLinkedList;
 const SinglyLinkedList = path.SinglyLinkedList;
 const removeDuplicates = path.removeDuplicates;
@@ -369,5 +370,50 @@ describe('findKthNode', () => {
 		expect(linkedList.findKthNode(4)).to.eql('3');
 		expect(linkedList.findKthNode(5)).to.eql('2');
 		expect(linkedList.findKthNode(6)).to.eql('1');
+	});
+});
+
+describe('deleteMiddle', () => {
+	let linkedList;
+
+	beforeEach(() => {
+		SinglyLinkedList.prototype.deleteMiddle = deleteMiddle;
+		linkedList = new SinglyLinkedList();
+		linkedList.addToTail('1');
+		linkedList.addToTail('2');
+		linkedList.addToTail('3');
+		linkedList.addToTail('4');
+		linkedList.addToTail('5');
+		linkedList.addToTail('6');
+		linkedList.addToTail('7');
+		linkedList.addToTail('8');
+	});
+
+	it('should not remove end nodes', () => {
+		let node = linkedList.findNode('1');
+		expect(linkedList.deleteMiddle(node)).to.eql(null);
+		node = linkedList.findNode('8');
+		expect(linkedList.deleteMiddle(node)).to.eql(null);
+	});
+
+	it('should remove "middle" nodes, i.e., nodes between head and tail', () => {
+		let node = linkedList.findNode('2');
+		linkedList.deleteMiddle(node);
+		expect(linkedList.head.next.value).to.eql('3');
+		expect(linkedList.length).to.eql(7);
+		node = linkedList.findNode('3');
+		linkedList.deleteMiddle(node);
+		expect(linkedList.head.next.value).to.eql('4');
+		expect(linkedList.length).to.eql(6);
+		node = linkedList.findNode('7');
+		linkedList.deleteMiddle(node);
+		node = linkedList.findNode('6');
+		linkedList.deleteMiddle(node);
+		node = linkedList.findNode('5');
+		linkedList.deleteMiddle(node);
+		node = linkedList.findNode('4');
+		linkedList.deleteMiddle(node);
+		expect(linkedList.head.next.value).to.eql('8');
+		expect(linkedList.length).to.eql(2);
 	});
 });
