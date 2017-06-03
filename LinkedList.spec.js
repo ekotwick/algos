@@ -9,6 +9,8 @@ const dblLLNode = path.dblLLNode;
 const sglLLNode = path.sglLLNode;
 const DoublyLinkedList = path.DoublyLinkedList;
 const SinglyLinkedList = path.SinglyLinkedList;
+const removeDuplicates = path.removeDuplicates;
+const removeDuplicatesWithoutBuffer = path.removeDuplicatesWithoutBuffer;
 
 describe('DoublyLinkedList', () => {
 	let linkedList;
@@ -285,5 +287,59 @@ describe('SinglyLinkedList', () => {
 		expect(linkedList.find('second')).to.eql('second');
 		expect(linkedList.find('third')).to.eql('third');
 		expect(linkedList.find('aaa')).to.eql(null);
+	});
+});
+
+describe('removeDuplicates', () => {
+	let linkedList;
+
+	beforeEach(() => {
+		DoublyLinkedList.prototype.removeDuplicates = removeDuplicates;
+		linkedList = new DoublyLinkedList();
+		linkedList.addToTail('1');
+		linkedList.addToTail('2');
+		linkedList.addToTail('1');
+		linkedList.addToTail('3');
+		linkedList.addToTail('2');
+		linkedList.addToTail('1');
+		linkedList.addToTail('4');
+		linkedList.addToTail('1');
+	});
+
+	it('should remove all duplicates from doubly linked list', () => {
+		linkedList.removeDuplicates();
+		expect(linkedList.head.value).to.eql('1');
+		expect(linkedList.head.next.value).to.eql('2');
+		expect(linkedList.head.next.next.value).to.eql('3');
+		expect(linkedList.head.next.next.next.value).to.eql('4');
+		expect(linkedList.tail.value).to.eql('4');
+		expect(linkedList.length).to.eql(4);
+	});
+});
+
+describe('removeDuplicatesWithoutBuffer', () => {
+	let linkedList;
+
+	beforeEach(() => {
+		DoublyLinkedList.prototype.removeDuplicatesWithoutBuffer = removeDuplicatesWithoutBuffer;
+		linkedList = new DoublyLinkedList();
+		linkedList.addToTail('1');
+		linkedList.addToTail('2');
+		linkedList.addToTail('1');
+		linkedList.addToTail('3');
+		linkedList.addToTail('2');
+		linkedList.addToTail('1');
+		linkedList.addToTail('4');
+		linkedList.addToTail('1');
+	});
+
+	it('should remove all duplicates from doubly linked list', () => {
+		linkedList.removeDuplicatesWithoutBuffer();
+		expect(linkedList.head.value).to.eql('1');
+		expect(linkedList.head.next.value).to.eql('2');
+		expect(linkedList.head.next.next.value).to.eql('3');
+		expect(linkedList.head.next.next.next.value).to.eql('4');
+		expect(linkedList.tail.value).to.eql('4');
+		expect(linkedList.length).to.eql(4);
 	});
 });

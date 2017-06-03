@@ -12,6 +12,7 @@ class DoublyLinkedList {
 	constructor() {
 		this.head = null;
 		this.tail = null;
+		this.length = 0;
 	}
 
 	addToHead(val) {
@@ -30,6 +31,7 @@ class DoublyLinkedList {
 			this.head.next = node;
 			node.next.prev = node;
 		}
+		this.length++;
 		return this;
 	}
 
@@ -47,6 +49,7 @@ class DoublyLinkedList {
 			this.tail.next = node;
 			this.tail = node;
 		}
+		this.length++
 		return this;
 	}
 
@@ -57,11 +60,13 @@ class DoublyLinkedList {
 			toReturn = this.head;
 			this.head = null;
 			this.tail = null;
+			this.length--;
 			return toReturn.value; 
 		} else {
 			toReturn = this.head;
 			this.head = this.head.next;
 			this.head.prev = null;
+			this.length--;
 			return toReturn.value;
 		}
 	}
@@ -73,11 +78,13 @@ class DoublyLinkedList {
 			toReturn = this.tail;
 			this.head = null;
 			this.tail = null;
+			this.length--;
 			return toReturn.value;
 		} else {
 			toReturn = this.tail;
 			this.tail = this.tail.prev;
 			this.tail.next = null;
+			this.length--;
 			return toReturn.value;
 		}
 	}
@@ -93,6 +100,51 @@ class DoublyLinkedList {
 	}
 }
 
+// not an arrow function because——MIND THE CONTEXT OF THIS!
+const removeDuplicates = function(){
+	let singles = new Set();
+	let currNode = this.head;
+	while (currNode) {
+		if (singles.has(currNode.value)) {
+			if (currNode.next) {
+				currNode.prev.next = currNode.next;
+				currNode.next.prev = currNode.prev;
+			} else {
+				this.tail = currNode.prev;
+				this.tail.next = null;
+			}
+			this.length--;
+		} else {
+			singles.add(currNode.value);
+		}
+		currNode = currNode.next;
+	}
+	return this;
+};
+
+const removeDuplicatesWithoutBuffer = function() {
+	let currNode = this.head;
+	let runner = this.head.next;
+	while (currNode) {
+		while (runner) {
+			if (currNode.value === runner.value) {
+				if (runner.next) {
+					runner.prev.next = runner.next;
+					runner.next.prev = runner.prev;
+				} else {
+					this.tail = runner.prev;
+					this.tail.next = null;
+				}
+				this.length--;
+			}
+			runner = runner.next;
+		}
+		currNode = currNode.next;
+		if (currNode) runner = currNode.next;
+	}
+	return this;
+};
+
 class sglLLNode {
 	constructor(val) {
 		this.value = val;
@@ -104,6 +156,7 @@ class SinglyLinkedList {
 	constructor() {
 		this.head = null;
 		this.tail = null;
+		this.length = 0;
 	}
 
 	addToHead(val) {
@@ -118,6 +171,7 @@ class SinglyLinkedList {
 			node.next = this.head.next;
 			this.head.next = node;
 		}
+		this.length++;
 		return this;
 	}
 
@@ -133,6 +187,7 @@ class SinglyLinkedList {
 			this.tail.next = node;
 			this.tail = node;
 		}
+		this.length++
 		return this;
 	}
 
@@ -143,10 +198,12 @@ class SinglyLinkedList {
 			toReturn = this.head;
 			this.head = null;
 			this.tail = null;
+			this.length--;
 			return toReturn.value;
 		} else {
 			toReturn = this.head;
 			this.head = this.head.next;
+			this.length--;
 			return toReturn.value;
 		}
 	}
@@ -158,6 +215,7 @@ class SinglyLinkedList {
 			toReturn = this.tail;
 			this.head = null;
 			this.tail = null;
+			this.length--;
 			return toReturn.value;
 		} else {
 			toReturn = this.tail;
@@ -169,6 +227,7 @@ class SinglyLinkedList {
 				}
 				currNode = currNode.next;
 			}
+			this.length--;
 			return toReturn.value;
 		}
 	}
@@ -185,4 +244,4 @@ class SinglyLinkedList {
 
 }
 
-module.exports = { dblLLNode, DoublyLinkedList, sglLLNode, SinglyLinkedList }
+module.exports = { dblLLNode, DoublyLinkedList, sglLLNode, SinglyLinkedList, removeDuplicates, removeDuplicatesWithoutBuffer }
