@@ -5,7 +5,9 @@ const expect = require('chai').expect;
 const path = require('./LinkedList');
 
 const dblLLNode = path.dblLLNode;
+const sglLLNode = path.sglLLNode;
 const DoublyLinkedList = path.DoublyLinkedList;
+const SinglyLinkedList = path.SinglyLinkedList;
 
 describe('DoublyLinkedList', () => {
 	let linkedList;
@@ -22,30 +24,33 @@ describe('DoublyLinkedList', () => {
 		expect(linkedList.find).to.be.a('function');
 	});
 
-	it('should properties `this.head` and `this.tail`...', () => {
-		expect(linkedList).to.have.own.property(this.head);
-		expect(linkedList).to.have.own.property(this.tail);
+	it('should have properties `this.head` and `this.tail`...', () => {
+		expect(linkedList).to.have.own.property('head');
+		expect(linkedList).to.have.own.property('tail');
 	});
 
 	it('...which are initially assigned `null` values', () => {
 		expect(linkedList.head).to.eql(null);
-		expect(linkedList.removeFromHead).to.eql(null);
+		expect(linkedList.removeFromHead()).to.eql(null);
 		expect(linkedList.tail).to.eql(null);
-		expect(linkedList.removeFromTail).to.eql(null);
+		expect(linkedList.removeFromTail()).to.eql(null);
 	});
 
 	it('should use a `dblLLNode` class to add nodes to `DoublyLinkedList`...', () => {
-		linkedList.addToHead('first');
-		expect(linkedList.head instanceof dblLLNode).to.be(true);
+		linkedList.addToHead('head');
+		expect(linkedList.head).to.be.an.instanceof(dblLLNode);
+		linkedList.removeFromHead();
+		linkedList.addToTail('tail');
+		expect(linkedList.tail).to.be.an.instanceof(dblLLNode);
 	});
 
 	it('...and the `dblLLNode` class takes a value argument and has `next` and `previous` properties initially set to null', () => {
 		let node = new dblLLNode('test');
-		expect(node).to.have.own.property(this.value);
+		expect(node).to.have.own.property('value');
 		expect(node.value).to.eql('test');
-		expect(node).to.have.own.property(this.next);
+		expect(node).to.have.own.property('next');
 		expect(node.next).to.eql(null);
-		expect(node).to.have.own.property(this.prev);
+		expect(node).to.have.own.property('prev');
 		expect(node.prev).to.eql(null);
 	});
 
@@ -74,6 +79,7 @@ describe('DoublyLinkedList', () => {
 		linkedList.addToTail('second');
 		linkedList.addToTail('third');
 		linkedList.addToHead('fourth');
+		expect(linkedList.head.value).to.eql('first');
 		expect(linkedList.head.next.value).to.eql('fourth');
 		expect(linkedList.head.next.prev.value).to.eql('first');
 		expect(linkedList.head.next.next.value).to.eql('second');
@@ -92,7 +98,7 @@ describe('DoublyLinkedList', () => {
 		expect(linkedList.head.next.next.value).to.eql('third');
 	});
 
-	it('should remove correctly from populated DoublyLinkedLists with `removeFromHead` method', () => {
+	it('should remove correctly with `removeFromHead` method', () => {
 		linkedList.addToTail('first');
 		linkedList.addToTail('second');
 		linkedList.addToTail('third');
@@ -107,7 +113,7 @@ describe('DoublyLinkedList', () => {
 		expect(linkedList.tail).to.eql(null);
 	});
 
-	it('should remove correctly from populated DoublyLinkedLists with `removeFromTail` method', () => {
+	it('should remove correctly with `removeFromTail` method', () => {
 		linkedList.addToTail('first');
 		linkedList.addToTail('second');
 		linkedList.addToTail('third');
@@ -130,5 +136,61 @@ describe('DoublyLinkedList', () => {
 		expect(linkedList.find('second')).to.eql('second');
 		expect(linkedList.find('third')).to.eql('third');
 		expect(linkedList.find('aaa')).to.eql(null);
+	});
+});
+
+describe('SinglyLinkedList', () => {
+	let linkedList;
+
+	beforeEach(() => {
+		linkedList = new SinglyLinkedList();
+	});
+
+	it('should have `addToHead`, `addToTail`, `removeFromHead`, `removeFromTail`, and `find` methods', () => {
+
+	});
+
+	it('should have `head` and `tail` properties...', () => {
+
+	});
+
+	it('...which are initially set to `null`', () => {
+
+	});
+
+	it('should used `sglLLNode` to add nodes to `SinglyLinkedList`...', () => {
+
+	});
+
+	it('...and each `sglLLNode` should have `value`, `next`, and `prev` properties', () => {
+
+	});
+
+	it('should add correctly to empty SinglyLinkedLists with `addToHead` method', () => {
+
+	});
+
+	it('should add correctly to empty SinglyLinkedLists with `addToTail` method', () => {
+
+	});
+
+	it('should add correctly to populated SinglyLinkedLists with `addToHead` method', () => {
+
+	});
+
+	it('should add correctly to populated SinglyLinkedLists with `addToTail` method', () => {
+
+	});
+
+	it('should remove correctly with `removeFromHead` method', () => {
+
+	});
+
+	it('should remove correctly with `removeFromTail` method', () => {
+
+	});
+
+	it('should return correct values with `find`', () => {
+
 	});
 });
