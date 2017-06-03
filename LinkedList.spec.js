@@ -1,6 +1,7 @@
 'use strict';
 
 const expect = require('chai').expect;
+const assert = require('chai').assert;
 
 const path = require('./LinkedList');
 
@@ -166,7 +167,6 @@ describe('SinglyLinkedList', () => {
 	});
 
 	it('should have `head` and `tail` properties...', () => {
-		expect(linkedList).to.have.own.property('value');
 		expect(linkedList).to.have.own.property('head');
 		expect(linkedList).to.have.own.property('tail');
 	});
@@ -184,24 +184,26 @@ describe('SinglyLinkedList', () => {
 		expect(linkedList.tail).to.be.instanceof(sglLLNode);
 	});
 
-	it('...and each `sglLLNode` should have `value`, `next`, and `prev` properties', () => {
+	it('...and each `sglLLNode` should have `value` and `next` properties...', () => {
 		let node = new sglLLNode('test');
 		expect(node).to.have.own.property('value');
 		expect(node.value).to.eql('test');
 		expect(node).to.have.own.property('next');
 		expect(node.next).to.eql(null);
-		expect(node).to.have.own.property('prev');
-		expect(node.prev).to.eql(null);
 	});
+
+	it('...but the `sglLLNode` __SHOULD NOT__ have `prev` property', () => {
+		let node = new sglLLNode('test');
+		expect(node).to.not.have.own.property('prev');
+		assert.notExists(node.prev);
+	}) 
 
 	it('should add correctly to empty SinglyLinkedLists with `addToHead` method', () => {
 		linkedList.addToHead('head');
 		expect(linkedList.head.value).to.eql('head');
 		expect(linkedList.tail.value).to.eql('head');
 		expect(linkedList.head.next).to.eql(null);
-		expect(linkedList.head.prev).to.eql(null);
 		expect(linkedList.tail.next).to.eql(null);
-		expect(linkedList.tail.prev).to.eql(null);
 	});
 
 	it('should add correctly to empty SinglyLinkedLists with `addToTail` method', () => {
@@ -209,9 +211,7 @@ describe('SinglyLinkedList', () => {
 		expect(linkedList.head.value).to.eql('tail');
 		expect(linkedList.tail.value).to.eql('tail');
 		expect(linkedList.head.next).to.eql(null);
-		expect(linkedList.head.prev).to.eql(null);
 		expect(linkedList.tail.next).to.eql(null);
-		expect(linkedList.tail.prev).to.eql(null);
 	});
 
 	it('should add correctly to populated SinglyLinkedLists with `addToHead` method', () => {
@@ -220,9 +220,7 @@ describe('SinglyLinkedList', () => {
 		linkedList.addToTail('third');
 		linkedList.addToHead('fourth');
 		expect(linkedList.head.value).to.eql('first');
-		expect(linkedList.head.prev).to.eql(null);
 		expect(linkedList.head.next.value).to.eql('fourth');
-		expect(linkedList.head.next.prev.value).to.eql('first');
 		expect(linkedList.head.next.next.value).to.eql('second');
 		expect(linkedList.tail.value).to.eql('third');
 	});
@@ -232,10 +230,8 @@ describe('SinglyLinkedList', () => {
 		linkedList.addToTail('second');
 		linkedList.addToTail('third');
 		expect(linkedList.head.value).to.eql('first');
-		expect(linkedList.head.prev).to.eql(null);
 		expect(linkedList.head.next.next.value).to.eql('third');
 		expect(linkedList.tail.value).to.eql('third');
-		expect(linkedList.tail.prev.value).to.eql('second');
 		expect(linkedList.tail.next).to.eql(null);
 	});
 
@@ -247,12 +243,12 @@ describe('SinglyLinkedList', () => {
 		let first = linkedList.removeFromHead();
 		expect(first).to.eql('first');
 		expect(linkedList.head.value).to.eql('second');
-		expect(linkedList.head.prev).to.eql(null);
+		// expect(linkedList.head.prev).to.eql(null);
 
 		let second = linkedList.removeFromHead();
 		expect(second).to.eql('second');
 		expect(linkedList.head.value).to.eql('third');
-		expect(linkedList.head.prev).to.eql(null);
+		// expect(linkedList.head.prev).to.eql(null);
 
 		let third = linkedList.removeFromHead();
 		expect(third).to.eql('third');
