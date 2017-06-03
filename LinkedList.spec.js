@@ -7,6 +7,7 @@ const path = require('./LinkedList');
 
 const dblLLNode = path.dblLLNode;
 const sglLLNode = path.sglLLNode;
+const findKthNode = path.findKthNode;
 const DoublyLinkedList = path.DoublyLinkedList;
 const SinglyLinkedList = path.SinglyLinkedList;
 const removeDuplicates = path.removeDuplicates;
@@ -341,5 +342,32 @@ describe('removeDuplicatesWithoutBuffer', () => {
 		expect(linkedList.head.next.next.next.value).to.eql('4');
 		expect(linkedList.tail.value).to.eql('4');
 		expect(linkedList.length).to.eql(4);
+	});
+});
+
+describe('findKthNode', () => {
+	let linkedList;
+
+	beforeEach(() => {
+		DoublyLinkedList.prototype.findKthNode = findKthNode;
+		linkedList = new DoublyLinkedList();
+		linkedList.addToTail('1');
+		linkedList.addToTail('2');
+		linkedList.addToTail('3');
+		linkedList.addToTail('4');
+		linkedList.addToTail('5');
+		linkedList.addToTail('6');
+		linkedList.addToTail('7');
+	});
+
+	it('should find the K-th node from the end, where k = 0 is the tail and k = 1 is the first from end', () => {
+		expect(linkedList.findKthNode(8)).to.eql(null);
+		expect(linkedList.findKthNode(0)).to.eql('7');
+		expect(linkedList.findKthNode(1)).to.eql('6');
+		expect(linkedList.findKthNode(2)).to.eql('5');
+		expect(linkedList.findKthNode(3)).to.eql('4');
+		expect(linkedList.findKthNode(4)).to.eql('3');
+		expect(linkedList.findKthNode(5)).to.eql('2');
+		expect(linkedList.findKthNode(6)).to.eql('1');
 	});
 });

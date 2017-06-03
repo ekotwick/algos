@@ -145,6 +145,20 @@ const removeDuplicatesWithoutBuffer = function() {
 	return this;
 };
 
+const findKthNode = function(k) {
+	let endNode = this.head;
+	let kNode = this.head;
+	for (let i = 0 ; i < k; i++) {
+		endNode = endNode.next;
+		if (!endNode) return null;
+	}
+	while (endNode.next) {
+		endNode = endNode.next;
+		kNode = kNode.next;
+	}
+	return kNode.value;
+};
+
 class sglLLNode {
 	constructor(val) {
 		this.value = val;
@@ -244,4 +258,4 @@ class SinglyLinkedList {
 
 }
 
-module.exports = { dblLLNode, DoublyLinkedList, sglLLNode, SinglyLinkedList, removeDuplicates, removeDuplicatesWithoutBuffer }
+module.exports = { dblLLNode, DoublyLinkedList, sglLLNode, SinglyLinkedList, removeDuplicates, removeDuplicatesWithoutBuffer, findKthNode }
