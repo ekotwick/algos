@@ -1,5 +1,13 @@
 'use strict';
 
+// ################################################## //
+// ################################################## //
+// ##########															 ##########	//
+// ##########			DOUBLY LINKED LIST 			 ########## //
+// ##########															 ########## //
+// ################################################## //
+// ################################################## //
+
 class dblLLNode {
 	constructor(val) {
 		this.value = val;
@@ -16,6 +24,22 @@ class DoublyLinkedList {
 	}
 
 	addToHead(val) {
+		let node = new dblLLNode(val);
+		if (!this.head) {
+			this.head = node;
+			this.tail = node;
+		} else if (this.head === this.tail) {
+			node.next = this.tail;
+			this.tail.prev = node;
+			this.head = node;
+		} else {
+			node.next = this.head;
+			this.head.prev = node;
+			this.head = node;
+		}
+	}
+
+	addRightAfterHead(val) {
 		let node = new dblLLNode(val);
 		if (!this.head) {
 			this.head = node; 
@@ -98,7 +122,35 @@ class DoublyLinkedList {
 		}
 		return null;
 	}
+
+	findNode(val) {
+		if (!this.head) return null;
+		let currNode = this.head;
+		while (currNode) {
+			if (currNode.value === val) return currNode;
+			currNode = currNode.next;
+		}
+		return null;
+	}
+
+	printValues() {
+		let allValues = '';
+		let currNode = this.head;
+		while (currNode) {
+			allValues += currNode.value;
+			currNode = currNode.next;
+		}
+		return allValues;
+	}
 }
+
+// ################################################## //
+// ################################################## //
+// ##########															 ##########	//
+// ##########		DOUBLY LINKED LIST FUNCS	 ########## //
+// ##########															 ########## //
+// ################################################## //
+// ################################################## //
 
 // not an arrow function because——MIND THE CONTEXT OF THIS!
 const removeDuplicates = function(){
@@ -159,6 +211,36 @@ const findKthNode = function(k) {
 	return kNode.value;
 };
 
+const partition = function(val) {
+	let prePart = new DoublyLinkedList();
+	let postPart = new DoublyLinkedList();
+	let currNode = this.head;
+	while (currNode) {
+		if (currNode.value < val) {
+			prePart.addToTail(currNode.value);
+		} else if (currNode.value > val) {
+			postPart.addToTail(currNode.value);
+		} else {
+			postPart.addToHead(currNode.value);
+		}
+		currNode = currNode.next;
+	}
+	if (prePart.length) {
+		prePart.tail.next = postPart.head;
+		this.head = prePart.head;
+	} else {
+		this.head = postPart.head;
+	}
+};
+
+// ################################################## //
+// ################################################## //
+// ##########															 ##########	//
+// ##########			SINGLY LINKED LIST 			 ########## //
+// ##########															 ########## //
+// ################################################## //
+// ################################################## //
+
 class sglLLNode {
 	constructor(val) {
 		this.value = val;
@@ -174,6 +256,20 @@ class SinglyLinkedList {
 	}
 
 	addToHead(val) {
+		let node = new dblLLNode(val);
+		if (!this.head) {
+			this.head = node;
+			this.tail = node;
+		} else if (this.head === this.tail) {
+			node.next = this.tail;
+			this.head = node;
+		} else {
+			node.next = this.head;
+			this.head = node;
+		}
+	}
+
+	addRightAfterHead(val) {
 		let node = new sglLLNode(val);
 		if (!this.head) {
 			this.head = node;
@@ -266,7 +362,24 @@ class SinglyLinkedList {
 		return null;
 	}
 
+	printValues() {
+		let allValues = '';
+		let currNode = this.head;
+		while (currNode) {
+			allValues += currNode.value;
+			currNode = currNode.next;
+		}
+		return allValues;
+	}
 }
+
+// ################################################## //
+// ################################################## //
+// ##########															 ##########	//
+// ##########		SINGLY LINKED LIST FUNCS	 ########## //
+// ##########															 ########## //
+// ################################################## //
+// ################################################## //
 
 const deleteMiddle = function(node) {
 	if (node === null || node.next === null || this.head === node) {
@@ -276,6 +389,22 @@ const deleteMiddle = function(node) {
 		node.next = node.next.next;
 		this.length--;
 	}
-} 
+}
 
-module.exports = { dblLLNode, DoublyLinkedList, sglLLNode, SinglyLinkedList, removeDuplicates, removeDuplicatesWithoutBuffer, findKthNode, deleteMiddle };
+// ################################################## //
+// ################################################## //
+// ##########															 ##########	//
+// ##########	GENERAL LINKED LIST FUNCS		 ########## //
+// ##########															 ########## //
+// ################################################## //
+// ################################################## // 
+
+// ################################################## //
+// ################################################## //
+// ##########															 ##########	//
+// ##########						EXPORTS						 ########## //
+// ##########															 ########## //
+// ################################################## //
+// ################################################## // 
+
+module.exports = { dblLLNode, DoublyLinkedList, sglLLNode, SinglyLinkedList, removeDuplicates, removeDuplicatesWithoutBuffer, findKthNode, deleteMiddle, partition };

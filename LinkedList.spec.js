@@ -7,6 +7,7 @@ const path = require('./LinkedList');
 
 const dblLLNode = path.dblLLNode;
 const sglLLNode = path.sglLLNode;
+const partition = path.partition;
 const findKthNode = path.findKthNode;
 const deleteMiddle = path.deleteMiddle;
 const DoublyLinkedList = path.DoublyLinkedList;
@@ -21,8 +22,9 @@ describe('DoublyLinkedList', () => {
 		linkedList = new DoublyLinkedList();
 	});
 
-	it('should have `addToHead`, `addToTail`, `removeFromHead`, `removeFromTail` and `find` functions', () => {
+	it('should have `addToHead`, `addRightAfterHead`, `addToTail`, `removeFromHead`, `removeFromTail` and `find` functions', () => {
 		expect(linkedList.addToHead).to.be.a('function');
+		expect(linkedList.addRightAfterHead).to.be.a('function');
 		expect(linkedList.addToTail).to.be.a('function');
 		expect(linkedList.removeFromHead).to.be.a('function');
 		expect(linkedList.removeFromTail).to.be.a('function');
@@ -42,7 +44,7 @@ describe('DoublyLinkedList', () => {
 	});
 
 	it('should use a `dblLLNode` class to add nodes to `DoublyLinkedList`...', () => {
-		linkedList.addToHead('head');
+		linkedList.addRightAfterHead('head');
 		expect(linkedList.head).to.be.an.instanceof(dblLLNode);
 		linkedList.removeFromHead();
 		linkedList.addToTail('tail');
@@ -69,6 +71,16 @@ describe('DoublyLinkedList', () => {
 		expect(linkedList.tail.next).to.eql(null);
 	});
 
+	it('should add correctly to empty DoublyLinkedLists with `addRightAfterHead` method', () => {
+		linkedList.addRightAfterHead('first');
+		expect(linkedList.head.value).to.eql('first');
+		expect(linkedList.tail.value).to.eql('first');
+		expect(linkedList.head.next).to.eql(null);
+		expect(linkedList.head.prev).to.eql(null);
+		expect(linkedList.tail.next).to.eql(null);
+		expect(linkedList.tail.next).to.eql(null);
+	});
+
 	it('should add correctly to empty DoublyLinkedLists with `addToTail` method', () => {
 		linkedList.addToTail('first');
 		expect(linkedList.head.value).to.eql('first');
@@ -84,6 +96,18 @@ describe('DoublyLinkedList', () => {
 		linkedList.addToTail('second');
 		linkedList.addToTail('third');
 		linkedList.addToHead('fourth');
+		expect(linkedList.head.value).to.eql('fourth');
+		expect(linkedList.head.next.value).to.eql('first');
+		expect(linkedList.head.next.prev.value).to.eql('fourth');
+		expect(linkedList.head.next.next.value).to.eql('second');
+		expect(linkedList.tail.value).to.eql('third');
+	});
+
+	it('should add correctly to populated DoublyLinkedLists with `addRightAfterHead` method', () => {
+		linkedList.addToTail('first');
+		linkedList.addToTail('second');
+		linkedList.addToTail('third');
+		linkedList.addRightAfterHead('fourth');
 		expect(linkedList.head.value).to.eql('first');
 		expect(linkedList.head.next.value).to.eql('fourth');
 		expect(linkedList.head.next.prev.value).to.eql('first');
@@ -163,8 +187,8 @@ describe('SinglyLinkedList', () => {
 		linkedList = new SinglyLinkedList();
 	});
 
-	it('should have `addToHead`, `addToTail`, `removeFromHead`, `removeFromTail`, and `find` methods', () => {
-		expect(linkedList.addToHead).to.be.a('function');
+	it('should have `addRightAfterHead`, `addToTail`, `removeFromHead`, `removeFromTail`, and `find` methods', () => {
+		expect(linkedList.addRightAfterHead).to.be.a('function');
 		expect(linkedList.addToTail).to.be.a('function');
 		expect(linkedList.removeFromHead).to.be.a('function');
 		expect(linkedList.removeFromTail).to.be.a('function');
@@ -181,7 +205,7 @@ describe('SinglyLinkedList', () => {
 	});
 
 	it('should used `sglLLNode` to add nodes to `SinglyLinkedList`...', () => {
-		linkedList.addToHead('head');
+		linkedList.addRightAfterHead('head');
 		expect(linkedList.head).to.be.instanceof(sglLLNode);
 		linkedList.removeFromHead();
 		linkedList.addToTail('tail');
@@ -200,10 +224,20 @@ describe('SinglyLinkedList', () => {
 		let node = new sglLLNode('test');
 		expect(node).to.not.have.own.property('prev');
 		assert.notExists(node.prev);
-	}) 
+	});
 
 	it('should add correctly to empty SinglyLinkedLists with `addToHead` method', () => {
-		linkedList.addToHead('head');
+		linkedList.addToHead('first');
+		expect(linkedList.head.value).to.eql('first');
+		expect(linkedList.tail.value).to.eql('first');
+		expect(linkedList.head.next).to.eql(null);
+		expect(linkedList.head.prev).to.eql(null);
+		expect(linkedList.tail.next).to.eql(null);
+		expect(linkedList.tail.next).to.eql(null);
+	}); 
+
+	it('should add correctly to empty SinglyLinkedLists with `addRightAfterHead` method', () => {
+		linkedList.addRightAfterHead('head');
 		expect(linkedList.head.value).to.eql('head');
 		expect(linkedList.tail.value).to.eql('head');
 		expect(linkedList.head.next).to.eql(null);
@@ -223,6 +257,17 @@ describe('SinglyLinkedList', () => {
 		linkedList.addToTail('second');
 		linkedList.addToTail('third');
 		linkedList.addToHead('fourth');
+		expect(linkedList.head.value).to.eql('fourth');
+		expect(linkedList.head.next.value).to.eql('first');
+		expect(linkedList.head.next.next.value).to.eql('second');
+		expect(linkedList.tail.value).to.eql('third');
+	});
+
+	it('should add correctly to populated SinglyLinkedLists with `addRightAfterHead` method', () => {
+		linkedList.addToTail('first');
+		linkedList.addToTail('second');
+		linkedList.addToTail('third');
+		linkedList.addRightAfterHead('fourth');
 		expect(linkedList.head.value).to.eql('first');
 		expect(linkedList.head.next.value).to.eql('fourth');
 		expect(linkedList.head.next.next.value).to.eql('second');
@@ -415,5 +460,36 @@ describe('deleteMiddle', () => {
 		linkedList.deleteMiddle(node);
 		expect(linkedList.head.next.value).to.eql('8');
 		expect(linkedList.length).to.eql(2);
+	});
+});
+
+describe('partition', () => {
+	let linkedList;
+
+	beforeEach(() => {
+		DoublyLinkedList.prototype.partition = partition;
+		linkedList = new DoublyLinkedList();
+		linkedList.addToTail('9');
+		linkedList.addToTail('0');
+		linkedList.addToTail('1');
+		linkedList.addToTail('6');
+		linkedList.addToTail('7');
+		linkedList.addToTail('8');
+		linkedList.addToTail('3');
+		linkedList.addToTail('5');
+		linkedList.addToTail('2');
+		linkedList.addToTail('4');
+	});
+
+	it('should regroup elements in list around partition, such that all nodes whose value are less than a partition value are "left" of the partition, and all nodes whose values are greater than the partition are "right" of the partition', () => {
+		linkedList.partition('0');
+		let test = linkedList.printValues();
+		expect(test).to.eql('0916783524');
+		linkedList.partition('9');
+		test = linkedList.printValues();
+		expect(test).to.eql('0167835249');
+		linkedList.partition('5');
+		test = linkedList.printValues();
+		expect(test).to.eql('0132456789');
 	});
 });
