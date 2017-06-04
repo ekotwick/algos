@@ -10,6 +10,7 @@ const sglLLNode = path.sglLLNode;
 const partition = path.partition;
 const findKthNode = path.findKthNode;
 const deleteMiddle = path.deleteMiddle;
+const sumListsForward = path.sumListsForward;
 const DoublyLinkedList = path.DoublyLinkedList;
 const SinglyLinkedList = path.SinglyLinkedList;
 const removeDuplicates = path.removeDuplicates;
@@ -491,5 +492,56 @@ describe('partition', () => {
 		linkedList.partition('5');
 		test = linkedList.printValues();
 		expect(test).to.eql('0132456789');
+	});
+});
+
+describe('sumListsForward', () => {
+	let ll1, ll2;
+
+	beforeEach(() => {
+		ll1 = new SinglyLinkedList();
+		ll2 = new SinglyLinkedList();
+	});
+
+	// it('should take two linked lists as arguments, each of which has integers as node values', () => {
+
+	// })
+
+	it('should add 111 and 111 together to make 222', () => {
+		ll1.addToTail(1);
+		ll1.addToTail(1);
+		ll1.addToTail(1);
+		ll2.addToTail(1);
+		ll2.addToTail(1);
+		ll2.addToTail(1);
+		expect(sumListsForward(ll1, ll2)).to.eql(222);
+	});
+
+	it('should add 617 and 295 to make 912', () => {
+		ll1.addToTail(7);
+		ll1.addToTail(1);
+		ll1.addToTail(6);
+		ll2.addToTail(5);
+		ll2.addToTail(9);
+		ll2.addToTail(2);
+		expect(sumListsForward(ll1, ll2)).to.eql(912);
+	});
+
+	it('should add 1 and 999 to make 1000', () => {
+		ll1.addToTail(1);
+		ll2.addToTail(9);
+		ll2.addToTail(9);
+		ll2.addToTail(9);
+		expect(sumListsForward(ll1, ll2)).to.eql(1000);
+	});
+
+	it('should add 10 and 2000 to make 2010', () => {
+		ll1.addToTail(0);
+		ll1.addToTail(1);
+		ll2.addToTail(0);
+		ll2.addToTail(0);
+		ll2.addToTail(0);
+		ll2.addToTail(2);
+		expect(sumListsForward(ll1, ll2)).to.eql(2010);
 	});
 });

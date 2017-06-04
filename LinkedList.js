@@ -389,7 +389,7 @@ const deleteMiddle = function(node) {
 		node.next = node.next.next;
 		this.length--;
 	}
-}
+};
 
 // ################################################## //
 // ################################################## //
@@ -399,6 +399,33 @@ const deleteMiddle = function(node) {
 // ################################################## //
 // ################################################## // 
 
+const sumListsForward = (l1, l2) => {
+	let num1, num2, tempSum, tempSumString;
+	let node1 = l1.head;
+	let node2 = l2.head;
+	let sum = '';
+	let carryOver = 0;
+	while (node1 || node2) {
+		if (node1) num1 = node1.value;
+		if (node2) num2 = node2.value;
+		tempSum = num1 + num2 + carryOver;
+		tempSumString = tempSum.toString(10);
+		if (tempSum > 9) {
+			carryOver = 1;
+			sum = tempSumString[1] + sum;
+		} else {
+			carryOver = 0;
+			sum = tempSumString + sum;
+		}
+		if (node1) node1 = node1.next;
+		if (node2) node2 = node2.next;
+		num1 = 0;
+		num2 = 0;
+	}
+	if (carryOver === 1) sum = carryOver.toString(10) + sum;
+	return parseInt(sum,10);
+};
+
 // ################################################## //
 // ################################################## //
 // ##########															 ##########	//
@@ -407,4 +434,4 @@ const deleteMiddle = function(node) {
 // ################################################## //
 // ################################################## // 
 
-module.exports = { dblLLNode, DoublyLinkedList, sglLLNode, SinglyLinkedList, removeDuplicates, removeDuplicatesWithoutBuffer, findKthNode, deleteMiddle, partition };
+module.exports = { dblLLNode, DoublyLinkedList, sglLLNode, SinglyLinkedList, removeDuplicates, removeDuplicatesWithoutBuffer, findKthNode, deleteMiddle, partition, sumListsForward };
