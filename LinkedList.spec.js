@@ -9,12 +9,12 @@ const sumLists = path.sumLists;
 const dblLLNode = path.dblLLNode;
 const sglLLNode = path.sglLLNode;
 const partition = path.partition;
+const palindrome = path.palindrome;
 const findKthNode = path.findKthNode;
 const deleteMiddle = path.deleteMiddle;
 const DoublyLinkedList = path.DoublyLinkedList;
 const SinglyLinkedList = path.SinglyLinkedList;
 const removeDuplicates = path.removeDuplicates;
-const sumListsBackward = path.sumListsBackward;
 const removeDuplicatesWithoutBuffer = path.removeDuplicatesWithoutBuffer;
 
 describe('DoublyLinkedList', () => {
@@ -496,7 +496,7 @@ describe('partition', () => {
 	});
 });
 
-describe('SumLists', () => {
+describe('sumLists', () => {
 	let ll1, ll2;
 
 	beforeEach(() => {
@@ -515,7 +515,7 @@ describe('SumLists', () => {
 		ll2.addToTail(1);
 		ll2.addToTail(1);
 		ll2.addToTail(1);
-		expect(SumLists(ll1, ll2)).to.eql(222);
+		expect(sumLists(ll1, ll2)).to.eql(222);
 	});
 
 	it('should add 617 and 295 to make 912', () => {
@@ -525,7 +525,7 @@ describe('SumLists', () => {
 		ll2.addToTail(5);
 		ll2.addToTail(9);
 		ll2.addToTail(2);
-		expect(SumLists(ll1, ll2)).to.eql(912);
+		expect(sumLists(ll1, ll2)).to.eql(912);
 	});
 
 	it('should add 1 and 999 to make 1000', () => {
@@ -533,7 +533,7 @@ describe('SumLists', () => {
 		ll2.addToTail(9);
 		ll2.addToTail(9);
 		ll2.addToTail(9);
-		expect(SumLists(ll1, ll2)).to.eql(1000);
+		expect(sumLists(ll1, ll2)).to.eql(1000);
 	});
 
 	it('should add 10 and 2000 to make 2010', () => {
@@ -543,6 +543,38 @@ describe('SumLists', () => {
 		ll2.addToTail(0);
 		ll2.addToTail(0);
 		ll2.addToTail(2);
-		expect(SumLists(ll1, ll2)).to.eql(2010);
+		expect(sumLists(ll1, ll2)).to.eql(2010);
+	});
+});
+
+describe('palindrome', () => {
+	let linkedList1, linkedList2, linkedList3, linkedList4;
+
+	beforeEach(() => {
+		DoublyLinkedList.prototype.palindrome = palindrome;
+		linkedList1 = new DoublyLinkedList();
+		linkedList1.addToTail('a');
+		linkedList1.addToTail('a');
+		linkedList1.addToTail('a');
+		linkedList2 = new DoublyLinkedList();
+		linkedList2.addToTail('a');
+		linkedList2.addToTail('b');
+		linkedList2.addToTail('a');
+		linkedList3 = new DoublyLinkedList();
+		linkedList3.addToTail('b');
+		linkedList3.addToTail('a');
+		linkedList3.addToTail('a');
+		linkedList3.addToTail('b');
+		linkedList4 = new DoublyLinkedList();
+		linkedList4.addToTail('a');
+		linkedList4.addToTail('b');
+		linkedList4.addToTail('c');
+	});
+
+	it('should determine whether the values of the nodes of a linked list form a palindrome', () => {
+		expect(linkedList1.palindrome()).to.eql(true);
+		expect(linkedList2.palindrome()).to.eql(true);
+		expect(linkedList3.palindrome()).to.eql(true);
+		expect(linkedList4.palindrome()).to.eql(false);
 	});
 });

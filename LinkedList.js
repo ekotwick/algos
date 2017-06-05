@@ -233,6 +233,17 @@ const partition = function(val) {
 	}
 };
 
+const palindrome = function() {
+	let forward = this.head;
+	let backward = this.tail;
+	while (forward) {
+		if (forward.value !== backward.value) return false;
+		forward = forward.next;
+		backward = backward.prev;
+	}
+	return true;
+};
+
 // ################################################## //
 // ################################################## //
 // ##########															 ##########	//
@@ -434,4 +445,4 @@ const sumLists = (l1, l2) => {
 // ################################################## //
 // ################################################## // 
 
-module.exports = { dblLLNode, DoublyLinkedList, sglLLNode, SinglyLinkedList, removeDuplicates, removeDuplicatesWithoutBuffer, findKthNode, deleteMiddle, partition, sumLists };
+module.exports = { dblLLNode, DoublyLinkedList, sglLLNode, SinglyLinkedList, removeDuplicates, removeDuplicatesWithoutBuffer, findKthNode, deleteMiddle, partition, sumLists, palindrome };
