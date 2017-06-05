@@ -399,7 +399,7 @@ const deleteMiddle = function(node) {
 // ################################################## //
 // ################################################## // 
 
-const sumListsForward = (l1, l2) => {
+const sumLists = (l1, l2) => {
 	let num1, num2, tempSum, tempSumString;
 	let node1 = l1.head;
 	let node2 = l2.head;
@@ -434,4 +434,4 @@ const sumListsForward = (l1, l2) => {
 // ################################################## //
 // ################################################## // 
 
-module.exports = { dblLLNode, DoublyLinkedList, sglLLNode, SinglyLinkedList, removeDuplicates, removeDuplicatesWithoutBuffer, findKthNode, deleteMiddle, partition, sumListsForward };
+module.exports = { dblLLNode, DoublyLinkedList, sglLLNode, SinglyLinkedList, removeDuplicates, removeDuplicatesWithoutBuffer, findKthNode, deleteMiddle, partition, sumLists };

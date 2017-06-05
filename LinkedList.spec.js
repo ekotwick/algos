@@ -5,15 +5,16 @@ const assert = require('chai').assert;
 
 const path = require('./LinkedList');
 
+const sumLists = path.sumLists;
 const dblLLNode = path.dblLLNode;
 const sglLLNode = path.sglLLNode;
 const partition = path.partition;
 const findKthNode = path.findKthNode;
 const deleteMiddle = path.deleteMiddle;
-const sumListsForward = path.sumListsForward;
 const DoublyLinkedList = path.DoublyLinkedList;
 const SinglyLinkedList = path.SinglyLinkedList;
 const removeDuplicates = path.removeDuplicates;
+const sumListsBackward = path.sumListsBackward;
 const removeDuplicatesWithoutBuffer = path.removeDuplicatesWithoutBuffer;
 
 describe('DoublyLinkedList', () => {
@@ -495,7 +496,7 @@ describe('partition', () => {
 	});
 });
 
-describe('sumListsForward', () => {
+describe('SumLists', () => {
 	let ll1, ll2;
 
 	beforeEach(() => {
@@ -514,7 +515,7 @@ describe('sumListsForward', () => {
 		ll2.addToTail(1);
 		ll2.addToTail(1);
 		ll2.addToTail(1);
-		expect(sumListsForward(ll1, ll2)).to.eql(222);
+		expect(SumLists(ll1, ll2)).to.eql(222);
 	});
 
 	it('should add 617 and 295 to make 912', () => {
@@ -524,7 +525,7 @@ describe('sumListsForward', () => {
 		ll2.addToTail(5);
 		ll2.addToTail(9);
 		ll2.addToTail(2);
-		expect(sumListsForward(ll1, ll2)).to.eql(912);
+		expect(SumLists(ll1, ll2)).to.eql(912);
 	});
 
 	it('should add 1 and 999 to make 1000', () => {
@@ -532,7 +533,7 @@ describe('sumListsForward', () => {
 		ll2.addToTail(9);
 		ll2.addToTail(9);
 		ll2.addToTail(9);
-		expect(sumListsForward(ll1, ll2)).to.eql(1000);
+		expect(SumLists(ll1, ll2)).to.eql(1000);
 	});
 
 	it('should add 10 and 2000 to make 2010', () => {
@@ -542,6 +543,6 @@ describe('sumListsForward', () => {
 		ll2.addToTail(0);
 		ll2.addToTail(0);
 		ll2.addToTail(2);
-		expect(sumListsForward(ll1, ll2)).to.eql(2010);
+		expect(SumLists(ll1, ll2)).to.eql(2010);
 	});
 });
