@@ -6,15 +6,19 @@ const SingleLL = require('./LinkedList').SinglyLinkedList;
 class Stack {
 	constructor() {
 		this.stack = new SingleLL();
+		this.min = new SingleLL();
 	}
 
 	push(val) {
 		this.stack.addToTail(val);
+		if (!this.min.tail || val < this.min.tail.value) this.min.addToTail(val);
 	}
 
 	pop() {
-		this.stack.removeFromTail();
+		let toReturn = this.stack.removeFromTail();
 		if (!this.stack) this.stack = new SingleLL();
+		if (toReturn === this.min.tail.value) this.min.removeFromTail();
+		return toReturn;
 	}
 
 	peek() {
@@ -24,6 +28,11 @@ class Stack {
 	isEmpty() {
 		if (this.stack.tail) return false;
 		return true;
+	}
+
+	getMin() {
+		if (this.min.tail) return this.min.tail.value;
+		else null;
 	}
 }
 

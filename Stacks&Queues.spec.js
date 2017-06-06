@@ -17,19 +17,19 @@ describe('Stack', () => {
 		stack = new Stack();
 	});
 
-	it('should have `push`, `pop`, `peek` and `isEmpty` methods', () => {
-		expect(stack.push).to.be.a('function');
-		expect(stack.pop).to.be.a('function');
-		expect(stack.peek).to.be.a('function');
-		expect(stack.isEmpty).to.be.a('function');
-	});
-
 	it('should be implemented with a linked list', () => {
 		expect(stack).to.have.own.property('stack');
 		expect(stack.stack).to.be.instanceof(SingleLL);
 		stack.push('first');
 		expect(stack.stack.head).to.be.instanceof(SingleLLNode);
 		expect(stack.stack.head.value).to.eql('first');
+	});
+
+	it('should have `push`, `pop`, `peek` and `isEmpty` methods', () => {
+		expect(stack.push).to.be.a('function');
+		expect(stack.pop).to.be.a('function');
+		expect(stack.peek).to.be.a('function');
+		expect(stack.isEmpty).to.be.a('function');
 	});
 
 	it('—`push` method should add items to the stack', () => {
@@ -106,6 +106,37 @@ describe('Stack', () => {
 		expect(stack.isEmpty()).to.eql(false);
 		stack.pop();
 		expect(stack.isEmpty()).to.eql(true);
+	});
+
+	it('should have a `min` property, which is itself a stack, and an associated `getMin` method', () => {
+		expect(stack).to.have.own.property('min');
+		expect(stack.min).to.be.instanceof(SingleLL);
+		expect(stack.getMin).to.be.a('function');
+	});
+
+	it('—`getMin` should return the smallest integer value in the stack', () => {
+		stack.push(5);
+		expect(stack.getMin()).to.eql(5);
+		stack.push(4);
+		expect(stack.getMin()).to.eql(4);
+		stack.push(6);
+		expect(stack.getMin()).to.eql(4);
+		stack.push(7);
+		expect(stack.getMin()).to.eql(4);
+		stack.push(3);
+		expect(stack.getMin()).to.eql(3);
+		stack.push(1);
+		expect(stack.getMin()).to.eql(1);
+		stack.pop();
+		expect(stack.getMin()).to.eql(3);
+		stack.pop();
+		expect(stack.getMin()).to.eql(4);
+		stack.pop();
+		stack.pop();
+		stack.pop();
+		expect(stack.getMin()).to.eql(5);
+		stack.pop();
+		expect(stack.getMin()).to.eql(undefined);
 	});
 });
 
