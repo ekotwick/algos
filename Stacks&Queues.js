@@ -28,7 +28,27 @@ class Stack {
 }
 
 class Queue {
+	constructor() {
+		this.queue = new SingleLL();
+	}
 
+	push(val) {
+		this.queue.addToTail(val);
+	}
+
+	pop() {
+		this.queue.removeFromHead();
+		if (!this.stack) this.stack = new SingleLL();
+	}
+
+	peek() {
+		return this.queue.head.value;
+	}
+
+	isEmpty() {
+		if (this.queue.head) return false;
+		return true;
+	}
 }
 
 module.exports = { Stack, Queue }
