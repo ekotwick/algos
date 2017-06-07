@@ -1,12 +1,16 @@
 'use strict';
 
+const spy = require('sinon').spy;
 const expect = require('chai').expect;
+const should = require('chai').should;
+const assert = require('chai').assert;
 
 const path = require('./Stacks&Queues');
 const linkedList = require('./LinkedList');
 
 const Stack = path.Stack;
 const Queue = path.Queue;
+const SetOfStacks = path.SetOfStacks;
 const SingleLLNode = linkedList.sglLLNode;
 const SingleLL = linkedList.SinglyLinkedList;
 
@@ -137,6 +141,125 @@ describe('Stack', () => {
 		expect(stack.getMin()).to.eql(5);
 		stack.pop();
 		expect(stack.getMin()).to.eql(undefined);
+	});
+});
+
+describe('SetOfStacks', () => {
+	let stackSet;
+
+	beforeEach(() => {
+		stackSet = new SetOfStacks();
+	});
+
+	it('should have `set` and `stackSize` properties', () => {
+		expect(stackSet).to.have.own.property('set');
+		expect(stackSet).to.have.own.property('stackSize');
+	});
+
+	it('—`set` should be an array and the first element of it should be a stack', () => {
+		expect(stackSet.set).to.be.instanceof(Array);
+		expect(stackSet.set[0]).to.be.instanceof(Stack);
+	});
+
+	it('—`stackSize` should be an integer value', () => {
+		expect(stackSet.stackSize).to.be.a('number');
+		stackSet.setStackSize(1.1);
+		expect(stackSet.stackSize).to.eql(0);
+		stackSet.setStackSize(1);
+		expect(stackSet.stackSize).to.eql(1);
+	});
+
+	it('should have `setStackSize`, `push`, pop`, `popAt` and `popAtRollOver` properties', () => {
+		expect(stackSet.setStackSize).to.be.a('function');
+		expect(stackSet.push).to.be.a('function');
+		expect(stackSet.pop).to.be.a('function');
+		expect(stackSet.popAt).to.be.a('function');
+		expect(stackSet.popAtRollOver).to.be.a('function');
+	});
+
+	it('—`setStackSize` should set the size for each stack in `set`', () => {
+		const setStackSizeSpy = spy(stackSet, 'setStackSize');
+		stackSet.setStackSize(4);
+		expect(setStackSizeSpy.callCount).to.eql(1);
+		assert(setStackSizeSpy.calledWith(4));
+		expect(stackSet.stackSize).to.eql(4);
+	});
+
+	it('—`push` should add item to stack, and when stack is at capacity, initialize a new stack at the next index of `set`', () => {
+		stackSet.setStackSize(3);
+		stackSet.push(1);
+		stackSet.push(2);
+		expect(stackSet.set.length).to.eql(1);
+		stackSet.push(3);
+		expect(stackSet.set[0].stack.length).to.eql(3);
+		expect(stackSet.set[1]).to.be.instanceof(Stack);
+		stackSet.push(4);
+		expect(stackSet.set.length).to.eql(2);
+		expect(stackSet.set[0].stack.tail.value).to.eql(3);
+		expect(stackSet.set[1].stack.tail.value).to.eql(4);
+	});
+
+	it('—`pop` should remove the most recent item added to the set of stacks, and remove empty stacks from `set`', () => {
+		stackSet.setStackSize(2);
+		stackSet.push(1);
+		stackSet.push(2);
+		stackSet.push(3);
+		const popAtSpy = spy(stackSet, 'popAt');
+		expect(stackSet.set.length).to.eql(2);
+		expect(stackSet.set[1].stack.tail.value).to.eql(3);
+		stackSet.pop();
+		expect(stackSet.set.length).to.eql(1);
+		expect(stackSet.set[0].stack.tail.value).to.eql(2);
+		expect(popAtSpy.callCount).to.eql(1);
+		assert(popAtSpy.calledWith(1));
+		stackSet.pop();
+		expect(stackSet.set.length).to.eql(1);
+		expect(stackSet.set[0].stack.tail.value).to.eql(1);
+		expect(popAtSpy.callCount).to.eql(2); // 2 because called a second time
+		assert(popAtSpy.calledWith(0));
+	});
+
+	it('—`popAt` should remove the top-most item in a stack at a specific index in `set`, and remove empty stacks from `set`', () => {
+		stackSet.setStackSize(2);
+		stackSet.push(1);
+		stackSet.push(2);
+		stackSet.push(3);
+		stackSet.push(4);
+		stackSet.push(5);
+		stackSet.push(6);
+		stackSet.push(7);
+		stackSet.push(8);
+		expect(stackSet.set.length).to.eql(5); // 4 because a new stack is created as soon as one is filled, even if there is nothing to place in the newly created stack
+		expect(stackSet.set[1].stack.tail.value).to.eql(4);
+		let test1 = stackSet.popAt(1);
+		expect(test1).to.eql(4);
+		expect(stackSet.set[1].stack.tail.value).to.eql(3);
+		let test2 = stackSet.popAt(1);
+		expect(test2).to.eql(3);
+		expect(stackSet.set.length).to.eql(4);
+		expect(stackSet.set[1].stack.tail.value).to.eql(6);
+	});
+
+	it('—`popAtRollOver` should, remove item from stack at specified index of set and then adjust all stacks in `set` such that all but the last are filled', () => {
+		stackSet.setStackSize(2);
+		stackSet.push(1);
+		stackSet.push(2);
+		stackSet.push(3);
+		stackSet.push(4);
+		stackSet.push(5);
+		stackSet.push(6);
+		expect(stackSet.set.length).to.eql(4);
+		let test1 = stackSet.popAtRollOver(1);
+		expect(test1).to.eql(4);
+		expect(stackSet.set[1].stack.tail.value).to.eql(5);
+		expect(stackSet.set[2].stack.tail.value).to.eql(6);
+		expect(stackSet.set[1].stack.length).to.eql(2);
+		expect(stackSet.set[2].stack.length).to.eql(1);
+		let test2 = stackSet.popAtRollOver(0);
+		expect(test2).to.eql(2);
+		expect(stackSet.set.length).to.eql(3);
+		expect(stackSet.set[1].stack.tail.value).to.eql(6);
+		expect(stackSet.set[0].stack.tail.value).to.eql(3);
 	});
 });
 
