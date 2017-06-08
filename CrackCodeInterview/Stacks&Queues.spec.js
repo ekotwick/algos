@@ -11,6 +11,7 @@ const linkedList = require('./LinkedList');
 const Stack = path.Stack;
 const Queue = path.Queue;
 const SetOfStacks = path.SetOfStacks;
+const QueueViaStack = path.QueueViaStack;
 const SingleLLNode = linkedList.sglLLNode;
 const SingleLL = linkedList.SinglyLinkedList;
 
@@ -364,5 +365,71 @@ describe('Queue', () => {
 		expect(queue.isEmpty()).to.eql(false);
 		queue.pop();
 		expect(queue.isEmpty()).to.eql(true);
+	});
+});
+
+describe('QueueViaStack', () => {
+	let qvs;
+
+	beforeEach(() => {
+		qvs = new QueueViaStack();
+	})
+	it('should have `a`, `b`, and `in` and `out` properties...', () => {
+		expect(qvs).to.have.own.property('a');
+		expect(qvs).to.have.own.property('b');
+		expect(qvs).to.have.own.property('in');
+		expect(qvs).to.have.own.property('out');
+	});
+
+	it('...where `in` and `out` are toggles that take strings "a" or "b" as values and `a` and `b` are instances of a Stack', () => {
+		expect(qvs.in).to.eql('a');
+		expect(qvs.out).to.eql('b');
+		expect(qvs.a).to.be.instanceof(Stack);
+		expect(qvs.b).to.be.instanceof(Stack);
+	});
+
+	it('should have `enqueue` and `dequeue` methods', () => {
+		expect(qvs.enqueue).to.be.a('function');
+		expect(qvs.dequeue).to.be.a('function');
+	});
+
+	it('—`enqueue` should add vales to `this[this.in]`', () => {
+		qvs.in = 'a';
+		qvs.out = 'b';
+		qvs.enqueue('first');
+		expect(qvs[qvs.in].peek()).to.eql('first');
+		expect(qvs[qvs.out].peek()).to.eql(undefined);
+		qvs.in = 'b';
+		qvs.out = 'a';
+		qvs.enqueue('second');
+		expect(qvs[qvs.in].peek()).to.eql('second');
+		expect(qvs[qvs.out].peek()).to.eql('first');
+		qvs.enqueue('third');
+		expect(qvs[qvs.in].peek()).to.eql('third');
+		expect(qvs[qvs.out].peek()).to.eql('first');
+	});
+
+	it('—`dequeue` should remove values from `this[this.out]` when it is not empty and move all values from `this[this.in]` to `this[this.out]` when it is empty', () => {
+		expect(qvs.in).to.eql('a');
+		expect(qvs.out).to.eql('b');
+		qvs.enqueue('first');
+		qvs.enqueue('second');
+		qvs.enqueue('third');
+		qvs.enqueue('fourth');
+		expect(qvs[qvs.in].stack.length).to.eql(4);
+		expect(qvs[qvs.out].stack.length).to.eql(0);
+		let test1 = qvs.dequeue();
+		expect(test1).to.eql('first');
+		expect(qvs[qvs.in].stack.length).to.eql(0);
+		expect(qvs[qvs.out].stack.length).to.eql(3);
+		qvs.enqueue('fifth');
+		expect(qvs[qvs.in].stack.length).to.eql(1);
+		expect(qvs[qvs.in].peek()).to.eql('fifth');
+		expect(qvs[qvs.out].stack.length).to.eql(3);
+		expect(qvs[qvs.out].peek()).to.eql('second');
+		let test2 = qvs.dequeue();
+		expect(test2).to.eql('second');
+		expect(qvs[qvs.in].stack.length).to.eql(1);
+		expect(qvs[qvs.out].stack.length).to.eql(2);
 	});
 });

@@ -22,7 +22,8 @@ class Stack {
 	}
 
 	peek() {
-		return this.stack.tail.value;
+		if (this.stack.tail) return this.stack.tail.value;
+		return
 	}
 
 	isEmpty() {
@@ -127,4 +128,28 @@ class Queue {
 	}
 }
 
-module.exports = { Stack, Queue, SetOfStacks }
+class QueueViaStack {
+	constructor() {
+		this.a = new Stack();
+		this.b = new Stack();
+		this.in = 'a';
+		this.out = 'b';
+	}
+
+	enqueue(val) {
+		this[this.in].push(val);
+	}
+
+	dequeue() {
+		if (this[this.out].peek()) return this[this.out].pop();
+		while (this[this.in].peek()) {
+			let toMove = this[this.in].pop();
+			this[this.out].push(toMove);
+		}
+		return this[this.out].pop();
+	}
+}
+
+
+
+module.exports = { Stack, Queue, SetOfStacks, QueueViaStack }
