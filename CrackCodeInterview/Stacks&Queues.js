@@ -107,19 +107,22 @@ class SetOfStacks {
 class Queue {
 	constructor() {
 		this.queue = new SingleLL();
+		this.length = 0;
 	}
 
 	push(val) {
 		this.queue.addToTail(val);
+		this.length++;
 	}
 
 	pop() {
-		this.queue.removeFromHead();
-		if (!this.stack) this.stack = new SingleLL();
+		this.length--;
+		return this.queue.removeFromHead();
 	}
 
 	peek() {
-		return this.queue.head.value;
+		if (this.queue.head) return this.queue.head.value;
+		return;
 	}
 
 	isEmpty() {
@@ -150,6 +153,52 @@ class QueueViaStack {
 	}
 }
 
+class AnimalShelter {
+	constructor() {
+		this.dogShelter = new Queue();
+		this.catShelter = new Queue();
+	}
 
+	receiveAny(an) {
+		if (an instanceof Dog) {
+			an.age = Date.now();
+			this.dogShelter.push(an);
+		} else {
+			an.age = Date.now();
+			this.catShelter.push(an);
+		}
+	}
 
-module.exports = { Stack, Queue, SetOfStacks, QueueViaStack }
+	releaseAny() {
+		let dog = this.dogShelter.peek() ? this.dogShelter.peek() : 0;
+		let cat = this.catShelter.peek() ? this.catShelter.peek() : 0;
+		if (dog.age >= cat.age) return this.dogShelter.pop();
+		return this.catShelter.pop();
+	}
+
+	releaseCat() {
+		if (this.catShelter.length) return this.catShelter.pop();
+		return;
+	}
+
+	releaseDog() {
+		if (this.dogShelter.length) return this.dogShelter.pop();
+		return;
+	}
+}
+
+class Dog {
+	constructor(name) {
+		this.name = name;
+		this.age;
+	}
+}
+
+class Cat {
+	constructor(name) {
+		this.name = name;
+		this.age;
+	}
+}
+
+module.exports = { Stack, Queue, SetOfStacks, QueueViaStack, AnimalShelter, Dog, Cat }

@@ -8,10 +8,13 @@ const assert = require('chai').assert;
 const path = require('./Stacks&Queues');
 const linkedList = require('./LinkedList');
 
+const Dog = path.Dog;
+const Cat = path.Cat;
 const Stack = path.Stack;
 const Queue = path.Queue;
 const SetOfStacks = path.SetOfStacks;
 const QueueViaStack = path.QueueViaStack;
+const AnimalShelter = path.AnimalShelter;
 const SingleLLNode = linkedList.sglLLNode;
 const SingleLL = linkedList.SinglyLinkedList;
 
@@ -431,5 +434,100 @@ describe('QueueViaStack', () => {
 		expect(test2).to.eql('second');
 		expect(qvs[qvs.in].stack.length).to.eql(1);
 		expect(qvs[qvs.out].stack.length).to.eql(2);
+	});
+});
+
+describe('AnimalShelter', () => {
+	let animalShelter;
+	let dog1, dog2, dog3, cat1, cat2, cat3;
+
+	beforeEach(() => {
+		animalShelter = new AnimalShelter();
+		dog1 = new Dog('d1');
+		dog2 = new Dog('d2');
+		dog3 = new Dog('d3');
+		cat1 = new Cat('c1');
+		cat2 = new Cat('c2');
+		cat3 = new Cat('c3');
+	});
+
+	it('should have `dogShelter` and `catShelter` properties, each of which is an instance of a Queue', () => {
+		expect(animalShelter).to.have.own.property('dogShelter');
+		expect(animalShelter).to.have.own.property('catShelter');
+		expect(animalShelter.dogShelter).to.be.instanceof(Queue);
+		expect(animalShelter.catShelter).to.be.instanceof(Queue);
+	});
+
+	it('should have `receiveAny`, `releaseAny`, `releaseDog`, and `releaseCat` methods', () => {
+		expect(animalShelter.receiveAny).to.be.a('function');
+		expect(animalShelter.releaseAny).to.be.a('function');
+		expect(animalShelter.releaseDog).to.be.a('function');
+		expect(animalShelter.releaseCat).to.be.a('function');
+	});
+
+	it('—`receiveAny` should take Dog and Cat instances and enqueue them to the appropriate queues...', () => {
+		let receiveSpy = spy(animalShelter, 'receiveAny');
+		animalShelter.receiveAny(dog1);
+		expect(receiveSpy.callCount).to.eql(1);
+		expect(receiveSpy.calledWith(dog1));
+		expect(dog1).to.be.instanceof(Dog);
+		expect(animalShelter.dogShelter.peek().name).to.eql('d1');
+		expect(animalShelter.catShelter.peek()).to.eql(undefined);
+		animalShelter.receiveAny(cat1);
+		expect(receiveSpy.callCount).to.eql(2);
+		expect(receiveSpy.calledWith(cat1));
+		expect(cat1).to.be.instanceof(Cat);
+		expect(animalShelter.dogShelter.peek().name).to.eql('d1');
+		expect(animalShelter.catShelter.peek().name).to.eql('c1');
+	});
+
+	it('...and when cats or dogs are received, their are given a date at which they were received', () => {
+		expect(dog1.age).to.eql(undefined);
+		expect(cat1.age).to.eql(undefined);
+		animalShelter.receiveAny(dog1);
+		animalShelter.receiveAny(cat1);
+		let dogAge = animalShelter.dogShelter.peek().age;
+		let catAge = animalShelter.catShelter.peek().age;
+		expect(dogAge <= catAge).to.eql(true); // JS's `Date.now()` marks date from time since a constant moment in the past. Hence older things will have a smaller number than younger things. The more recent the thing, the higher the `Date.now()` value.
+		expect(dog2.age).to.eql(undefined);
+		animalShelter.receiveAny(dog2);
+		let dog2Age = animalShelter.dogShelter.peek().age;
+		expect(dog2Age >= dogAge).to.eql(true);
+	});
+
+	it('—`releaseAny` will release only the older of any animal', () => {
+		animalShelter.receiveAny(dog1);
+		animalShelter.receiveAny(dog2);
+		animalShelter.receiveAny(cat1);
+		animalShelter.receiveAny(cat2);
+		dog1.age = 4;
+		dog2.age = 2;
+		cat1.age = 5;
+		cat2.age = 2;
+		let first = animalShelter.releaseAny();
+		expect(first).to.eql(cat1);
+		let second = animalShelter.releaseAny();
+		expect(second).to.eql(dog1);
+		let third = animalShelter.releaseAny();
+		expect(third).to.eql(dog2);
+		let fourth = animalShelter.releaseAny();
+		expect(fourth).to.eql(cat2);
+	});
+
+	it('—`releaseDog` and `releaseCat` dequeue from `dogShelter` and `catShelter` respectively', () => {
+		animalShelter.receiveAny(dog1);
+		animalShelter.receiveAny(dog2);
+		animalShelter.receiveAny(cat1);
+		animalShelter.receiveAny(cat2);
+		expect(animalShelter.dogShelter.queue.length).to.eql(2);
+		animalShelter.releaseDog();
+		expect(animalShelter.dogShelter.queue.length).to.eql(1);
+		animalShelter.releaseDog();
+		expect(animalShelter.dogShelter.queue.length).to.eql(0);
+		expect(animalShelter.catShelter.queue.length).to.eql(2);
+		animalShelter.releaseCat();
+		expect(animalShelter.catShelter.queue.length).to.eql(1);
+		animalShelter.releaseCat();
+		expect(animalShelter.catShelter.queue.length).to.eql(0);
 	});
 });
