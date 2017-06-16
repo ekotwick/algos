@@ -67,6 +67,13 @@ class BinarySearchTree extends BinaryTree {
 		super(val);
 	}
 
+	search(val) {
+		if (this.value === val) return true;
+		let dir = val < this.value ? 'left' : 'right';
+		if (!this[dir]) return false;
+		return this[dir].search(val);
+	}
+
 	insert(val) {
 		this.length++;
 		let dir = this.value > val ? 'left' : 'right';
