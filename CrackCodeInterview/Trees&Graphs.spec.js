@@ -112,19 +112,19 @@ describe('BinarySearchTree', () => {
 		let testArr = [];
 		const pusher = (val) => testArr.push(val);
 
-		let dftPre = bt.dft(pusher, 'pre-order');
+		bt.dft(pusher, 'pre-order');
 		expect(testArr).to.eql([15,5,0,1,14,13,12,11,25,17,21,28,50,45,30,35,33,31,34]);
 
 		testArr =[];
-		let dftIn = bt.dft(pusher, 'in-order');
+		bt.dft(pusher, 'in-order');
 		expect(testArr).to.eql([0,1,5,11,12,13,14,15,17,21,25,28,30,31,33,34,35,45,50]);
 
 		testArr =[];
-		let dftPost = bt.dft(pusher, 'post-order');
+		bt.dft(pusher, 'post-order');
 		expect(testArr).to.eql([1,0,11,12,13,14,5,21,17,31,34,33,35,30,45,50,28,25,15]);
 
 		testArr =[];
-		let bft = bt.bft(pusher);
+		bt.bft(pusher);
 		expect(testArr).to.eql([15,5,25,0,14,17,28,1,13,21,50,12,45,11,30,35,33,31,34]);
 	});
 });
