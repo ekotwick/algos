@@ -62,4 +62,17 @@ class BinaryTree {
 	}
 }
 
-module.exports = { BinaryTree }
+class BinarySearchTree extends BinaryTree {
+	constructor(val) {
+		super(val);
+	}
+
+	insert(val) {
+		this.length++;
+		let dir = this.value > val ? 'left' : 'right';
+		if (this[dir]) this[dir].insert(val);
+		else this[dir] = new BinarySearchTree(val);
+	}
+}
+
+module.exports = { BinaryTree, BinarySearchTree }
