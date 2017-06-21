@@ -84,14 +84,18 @@ class BinarySearchTree extends BinaryTree {
 
 class Graph {
   constructor() {
-    this.nodes = [];
+    this.nodes = {};
+  }
+
+  insert(val, ...neighbors) {
+    if (this.valExists(val)) return;
+    this.nodes[val] = new Set(neighbors);
+  }
+
+  valExists(val) {
+    if (this.val) return true;
+    return false;
   }
 }
 
-class GraphNode {
-  constructor() {
-    this.value = val,
-  }
-}
-
-module.exports = { BinaryTree, BinarySearchTree }
+module.exports = { BinaryTree, BinarySearchTree, Graph }
