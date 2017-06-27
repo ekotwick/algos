@@ -6,6 +6,7 @@ const path = require('./Trees&Graphs');
 
 const BinaryTree = path.BinaryTree;
 const BinarySearchTree = path.BinarySearchTree;
+const Graph = path.Graph;
 
 describe('BinaryTree', () => {
   let bt;
@@ -141,5 +142,66 @@ describe('BinarySearchTree', () => {
     testArr =[];
     bst.bft(pusher);
     expect(testArr).to.eql([15,5,25,0,14,17,28,1,13,21,50,12,45,11,30,35,33,31,34]);
+  });
+});
+
+describe('Graph', () => {
+  let graph;
+
+  beforeEach(() => {
+    graph = new Graph();
+    graph.insert(1,2,3,4,5,6);
+    graph.insert(2,3,4,1,5);
+    graph.insert(4,7,8,4,13,14);
+    graph.insert(3,1,2,6,4);
+    graph.insert(5,4,1,23,4,3);
+  });
+
+  it('should have `insert`, `findNode`, `remove`, and `findEdge` methods', () => {
+    expect(graph.insert).to.be.a('function');
+    expect(graph.findNode).to.be.a('function');
+    expect(graph.remove).to.be.a('function');
+    expect(graph.findEdge).to.be.a('function');
+  });
+
+  it('should have `node` property...', () => {
+    expect(graph).to.have.own.property('nodes');
+  });
+
+  it('...which should be an object literal, the values of which are Set instances', () => {
+    expect(graph.nodes).to.be.instanceof(Object);
+    expect(graph.nodes[1]).to.be.instanceOf(Set);
+    expect(graph.nodes[2]).to.be.instanceOf(Set);
+    expect(graph.nodes[3]).to.be.instanceOf(Set);
+    expect(graph.nodes[4]).to.be.instanceOf(Set);
+    expect(graph.nodes[5]).to.be.instanceOf(Set);
+  });
+
+  it('`inset` should insert nodes and all related edges to the graph', () => {
+    expect(graph[1]).to.exist();
+    expect(graph[2]).to.exist();
+    expect(graph[3]).to.exist();
+    expect(graph[4]).to.exist();
+    expect(graph[5]).to.exist();
+    expect(graph[6]).to.not.exist();
+    graph.insert(6,5,3,1,6,7);
+    expect(graph[7]).to.exist();
+  });
+
+  it('`findNode` should check to see whether the graph contains a specified node', () => {
+    expect(findNode[1]).to.eql(true);
+    expect(findNode[2]).to.eql(true);
+    expect(findNode[3]).to.eql(true);
+    expect(findNode[4]).to.eql(true);
+    expect(findNode[5]).to.eql(true);
+    expect(findNode[6]).to.eql(false);
+  });
+
+  it('`findEdge` should determine whether a given edge (startNode - endNode pair) exists in the graph', () => {
+
+  });
+
+  it('`remove` should remove a given node from the graph, and connected nodes should be adjusted accordingly', () => {
+
   });
 });
