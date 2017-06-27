@@ -88,14 +88,24 @@ class Graph {
   }
 
   insert(val, ...neighbors) {
-    if (this.valExists(val)) return;
-    this.nodes[val] = new Set(neighbors);
+    if (!this.valExists(val)) this.nodes[val] = new Set(neighbors);
+    else neighbors.forEach(n => (this.nodes[val].add(n)));
   }
 
-  valExists(val) {
+  findNode(val) {
     if (this.val) return true;
     return false;
+  }
+
+  remove(val) {
+    if (!this.val) return; 
+  }
+
+  findEdge(start, end) {
+
   }
 }
 
 module.exports = { BinaryTree, BinarySearchTree, Graph }
+
+[1,2,3,4,5,6,2,3,4,1,5,4,7,8,4,13,14,3,1,2,6,4,5,4,1,23,4,3]
