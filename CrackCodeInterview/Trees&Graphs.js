@@ -106,15 +106,27 @@ class BinarySearchTree extends BinaryTree {
 // ################################################## //
 // ################################################## //
 
-const minimalTree = (arr, start=0, end=arr.length - 1) => {
-  if (end < start) return null;
-  let mid = arr.length / 2;
+function minimalTree (arr, start=0, end=arr.length) {
+  let mid = Math.floor((end - start) / 2);
+  let left = arr.slice(0, mid);
+  let right = arr.slice(mid + 1);
+
+  this.value = arr[mid];
+  if (left.length) {
+    this.left = new BinarySearchTree();
+    this.left.minimalTree(left);
+  }
+  if (right.length) {
+    this.right = new BinarySearchTree();
+    this.right.minimalTree(right);
+  }
+  return this;
 }
 
 // ################################################## //
 // ################################################## //
 // ##########                              ########## //
-// ##########          GRAPHS              ########## //
+// ##########   BINARY SEARCH TREE FUNCS   ########## //
 // ##########                              ########## //
 // ################################################## //
 // ################################################## //
@@ -227,4 +239,4 @@ function findRoute(start, end) {
   return false;
 }
 
-module.exports = { BinaryTree, BinarySearchTree, Graph, findRoute }
+module.exports = { BinaryTree, BinarySearchTree, Graph, findRoute, minimalTree }
