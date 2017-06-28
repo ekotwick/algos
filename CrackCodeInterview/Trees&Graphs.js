@@ -82,6 +82,11 @@ class BinarySearchTree extends BinaryTree {
   }
 }
 
+const minimalTree = (arr, start=0, end=arr.length - 1) => {
+  if (end < start) return null;
+  let mid = arr.length / 2;
+}
+
 class Graph {
   constructor() {
     this.nodes = {};
@@ -106,7 +111,12 @@ class Graph {
     return result;
   }
 
-  getNodes() {
+  getConnections(node) {
+    if (this.findNode(node)) return [...this.nodes[node]];
+    else return;
+  }
+
+  getAllNodes() {
     return Object.keys(this.nodes);
   }
 
@@ -138,7 +148,8 @@ class Graph {
   }
 
   getEdges(start) {
-    return [...this.nodes[start]];
+    let connections = this.getConnections(start);
+    return connections.map(c => [start, c]);
   }
 
   getAllEdges() {
@@ -152,4 +163,28 @@ class Graph {
   }
 }
 
-module.exports = { BinaryTree, BinarySearchTree, Graph }
+function findRoute(start, end) {
+  if (!this.findNode(start)) return;
+  let checker = (n1) => n1 === end;
+
+  let queue = [start];
+  let visited = new Set();
+
+  while (queue.length) {
+    let current = queue.shift();
+    visited.add(current);
+    let connections = this.getConnections(current);
+    if (connections) {
+      connections.forEach(c => {
+        if (!visited.has(c)) {
+          queue.push(c);
+        }
+      });
+    }
+    if (checker(current)) return true;
+  }
+
+  return false;
+}
+
+module.exports = { BinaryTree, BinarySearchTree, Graph, findRoute }
