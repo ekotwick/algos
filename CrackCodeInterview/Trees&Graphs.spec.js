@@ -8,6 +8,7 @@ const path = require('./Trees&Graphs');
 const Graph = path.Graph;
 const findRoute = path.findRoute;
 const BinaryTree = path.BinaryTree;
+const minimalTree = path.minimalTree;
 const BinarySearchTree = path.BinarySearchTree;
 
 // ################################################## //
@@ -171,6 +172,38 @@ describe('BinarySearchTree', () => {
 // ##########                              ########## //
 // ################################################## //
 // ################################################## //
+
+describe('minimalTree', () => {
+  let tree;
+
+  beforeEach(() => {
+    BinarySearchTree.prototype.minimalTree = minimalTree;
+    tree = new BinarySearchTree();
+  });
+
+  it('should insert the values of a pre-ordered, array of odd-number length in such a way as to make the shortest tree possible', () => {
+    tree.minimalTree([1,2,3,4,5,6,7]);
+    expect(tree.value).to.eql(4);
+    expect(tree.left.value).to.eql(2);
+    expect(tree.right.value).to.eql(6);
+    expect(tree.left.left.value).to.eql(1);
+    expect(tree.right.left.value).to.eql(5);
+    expect(tree.left.right.value).to.eql(3);
+    expect(tree.right.right.value).to.eql(7);
+  });
+
+  it('should insert the values of a pre-ordered, array of even-number length in such a way as to make the shortest tree possible', () => {
+    tree.minimalTree([1,2,3,4,5,6,7,8]);
+    expect(tree.value).to.eql(5);
+    expect(tree.left.value).to.eql(3);
+    expect(tree.right.value).to.eql(7);
+    expect(tree.left.left.value).to.eql(2);
+    expect(tree.right.left.value).to.eql(6);
+    expect(tree.left.right.value).to.eql(4);
+    expect(tree.right.right.value).to.eql(8);
+    expect(tree.left.left.left.value).to.eql(1);
+  });
+});
 
 // ################################################## //
 // ################################################## //
