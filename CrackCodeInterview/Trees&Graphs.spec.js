@@ -1,12 +1,14 @@
 'use strict';
 
 const expect = require('chai').expect;
+const assert = require('chai').assert;
 
 const path = require('./Trees&Graphs');
 
+const Graph = path.Graph;
+const findRoute = path.findRoute;
 const BinaryTree = path.BinaryTree;
 const BinarySearchTree = path.BinarySearchTree;
-const Graph = path.Graph;
 
 describe('BinaryTree', () => {
   let bt;
@@ -158,11 +160,18 @@ describe('Graph', () => {
     graph.insertNode('m','m');
   });
 
-  it('should have `insertNode`, `findNode`, `getNode`, `getNodes`, `removeNode`, `insertEdge`, findEdge`, `removeEdge`, `getEdges`, `getAllEdges` methods', () => {
+  it('should have `insertNode`, `findNode`, `getNode`, `getConnections`, `getAllNodes`, `removeNode`, `insertEdge`, findEdge`, `removeEdge`, `getEdges`, `getAllEdges` methods', () => {
     expect(graph.insertNode).to.be.a('function');
     expect(graph.findNode).to.be.a('function');
+    expect(graph.getNode).to.be.a('function');
+    expect(graph.getConnections).to.be.a('function');
+    expect(graph.getAllNodes).to.be.a('function');
     expect(graph.removeNode).to.be.a('function');
+    expect(graph.insertEdge).to.be.a('function');
     expect(graph.findEdge).to.be.a('function');
+    expect(graph.removeEdge).to.be.a('function');
+    expect(graph.getEdges).to.be.a('function');
+    expect(graph.getAllEdges).to.be.a('function');
   });
 
   it('should have `nodes` property...', () => {
@@ -216,11 +225,20 @@ describe('Graph', () => {
     expect(graph.getNode('d')).to.eql({'d': ['c','a','z','b']});
     expect(graph.getNode('x')).to.eql({'x': []});
     expect(graph.getNode('z')).to.eql({'z': []});
+    expect(graph.getNode('m')).to.eql({'m': ['m']});
   });
 
-  it('`getNodes` should return all the nodes in the graph', () => {
+  it('`getConnections` should return an array of all connections of a given node, and an empty array if there are no connections', () => {
+    expect(graph.getConnections('a')).to.eql(['b','c','d','e']);
+    expect(graph.getConnections('d')).to.eql(['c','a','z','b']);
+    expect(graph.getConnections('x')).to.eql([]);
+    expect(graph.getConnections('z')).to.eql([]);
+    expect(graph.getConnections('m')).to.eql(['m']);
+  })
+
+  it('`getAllNodes` should return all the nodes in the graph', () => {
     let test = ['a','f','b','c','d','e','g','h','y','x','z','m'];
-    let nodes = graph.getNodes();
+    let nodes = graph.getAllNodes();
     expect(nodes.length).to.eql(test.length);
     test.forEach(n => {
       expect(nodes.includes(n)).to.eql(true);
@@ -240,7 +258,7 @@ describe('Graph', () => {
 
   it('`insertEdge` should create an edge between an existing node (arg1) and either an existing node or a new node (arg2), and it should return the graph instance', () => {
     expect(graph.insertEdge('a','t')).to.be.instanceof(Graph);
-    expect(graph.getNodes().includes('t')).to.eql(true);
+    expect(graph.getAllNodes().includes('t')).to.eql(true);
     expect(graph.getNode('a')['a'].includes('t')).to.eql(true);
     graph.insertEdge('a','m');
     expect(graph.getNode('a')['a'].includes('m')).to.eql(true);
@@ -248,7 +266,7 @@ describe('Graph', () => {
 
   it('`findEdge` should determine whether a given edge (startNode - endNode pair) exists in the graph (not that these are directional edges)', () => {
     expect(graph.findEdge('f','b')).to.eql(true);
-    expect(graph.findEdge('b','f')).to.eql(f);
+    expect(graph.findEdge('b','f')).to.eql(false);
     expect(graph.findEdge('c','c')).to.eql(true);
     expect(graph.findEdge('d','z')).to.eql(true);
     expect(graph.findEdge('b','e')).to.eql(true);
@@ -262,24 +280,53 @@ describe('Graph', () => {
 
   it('`removeEdge` should remove an edge for a given node, without, however, removing the source node from the graph, and should return undefined for non-existent nodes and edges', () => {
     graph.removeEdge('c','x');
-    expect(graph.getNodes().includes('x')).to.eql(true);
-    expect(graph.getNode('c')).to.eql(['c','g','h','c','y','d']);
+    expect(graph.getAllNodes().includes('x')).to.eql(true);
+    expect(graph.getConnections('c')).to.eql(['g','h','c','y','d']);
     graph.removeEdge('a','d');
-    expect(graph.getNode('a')).to.eql(['b','c','e']);
-    expect(graph.getNode('d')).to.eql(['c','a','z','b']);
+    expect(graph.getConnections('a')).to.eql(['b','c','e']);
+    expect(graph.getConnections('d')).to.eql(['c','a','z','b']);
   });
 
   it('`getEdges` should return all the edges for a given node; it should return undefined for non-existent nodes and return an empty array for nodes without edges', () => {
-    expect(graph.getEdges('a')).to.eql(['f','b','c','d','e']);
-    expect(graph.getEdges('c')).to.eql(['g','h','c','y','x']);
+    expect(graph.getEdges('a')).to.eql([['a','b'],['a','c'],['a','d'],['a','e']]);
+    expect(graph.getEdges('c')).to.eql([['c','g'],['c','h'],['c','c'],['c','y'],['c','x'],['c','d']]);
     expect(graph.getEdges('z')).to.eql([]);
     expect(graph.getEdges('x')).to.eql([]);
   });
 
-  it('`getAllEdges` should return an array of all edges in the graph', () => {
-    let allEdgesTest = [['a','b'],['a','c'],['a','d'],['a','e'],['f','b'],['f','c'],['f','a'],['c','g'],['c','h'],['c','c'],['c','y'],['c','x'],['c','d'],['b','a'],['b','z'],['b','e'],['b','c'],['d','c'],['d','a'],['d','z'],['d','b'],['m','m']];
-    let allEdgesMethod = graph.getAllEdges();
-    let test = allEdgesTest.filter(e => !allEdgesMethod.includes(e));
-    expect(test).to.have.length(0);
+  // need to write tests for deep equality of arrays of arrays
+  // it('`getAllEdges` should return an array of all edges in the graph', () => {
+  //   let allEdgesTest = [['a','b'],['a','c'],['a','d'],['a','e'],['f','b'],['f','c'],['f','a'],['c','g'],['c','h'],['c','c'],['c','y'],['c','x'],['c','d'],['b','a'],['b','z'],['b','e'],['b','c'],['d','c'],['d','a'],['d','z'],['d','b'],['m','m']];
+  //   let allEdgesMethod = graph.getAllEdges();
+  //   expect(allEdgesMethod.length).to.eql(allEdgesTest.length);
+  //   let test = new Set(allEdgesTest);
+  //   allEdgesMethod.forEach(e => test.delete(e));
+  //   expect([...test].length).to.eql(0);
+  // });
+});
+
+describe('findRoute', () => {
+  let graph;
+
+  beforeEach(() => {
+    Graph.prototype.findRoute = findRoute;
+    graph = new Graph();
+    graph.insertNode('a','c','f','h');
+    graph.insertNode('b','d','f','g');
+    graph.insertNode('c','c','d','i');
+    graph.insertNode('d','a','k','h','b');
+    graph.insertNode('e','b','c','d');
+    graph.insertNode('f','a');
+  });
+
+  it('should return true if a route (connected edges) exists between any two nodes and false if a route does not exist', () => {
+    expect(graph.findRoute('a','k')).to.eql(true);
+    expect(graph.findRoute('a','f')).to.eql(true);
+    expect(graph.findRoute('a','g')).to.eql(true);
+    expect(graph.findRoute('d','d')).to.eql(true);
+    expect(graph.findRoute('c','f')).to.eql(true);
+    expect(graph.findRoute('a','e')).to.eql(false);
+    expect(graph.findRoute('b','e')).to.eql(false);
+    expect(graph.findRoute('f','e')).to.eql(false);
   });
 });
