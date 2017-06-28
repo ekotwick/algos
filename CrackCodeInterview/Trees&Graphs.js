@@ -87,25 +87,69 @@ class Graph {
     this.nodes = {};
   }
 
-  insert(val, ...neighbors) {
-    if (!this.valExists(val)) this.nodes[val] = new Set(neighbors);
-    else neighbors.forEach(n => (this.nodes[val].add(n)));
-  }
-
   findNode(val) {
-    if (this.val) return true;
+    if (Object.keys(this.nodes).includes(val)) return true;
     return false;
   }
 
-  remove(val) {
-    if (!this.val) return; 
+  insertNode(val, ...neighbors) {
+    if (!this.findNode(val)) this.nodes[val] = new Set(neighbors);
+    else neighbors.forEach(n => (this.nodes[val].add(n)));
+    neighbors.forEach(n => {
+      if (!this.nodes[n]) this.insertNode(n);
+    });
+  }
+
+  getNode(val) {
+    let result = {};
+    result[val] = [...this.nodes[val]];
+    return result;
+  }
+
+  getNodes() {
+    return Object.keys(this.nodes);
+  }
+
+  removeNode(val) {
+    if (!this.findNode(val)) return;
+    delete this.nodes[val];
+    for (let key in this.nodes) {
+      this.nodes[key].delete(val);
+    }
+    return this;
   }
 
   findEdge(start, end) {
+    if (!this.findNode(start)) return false;
+    if (this.nodes[start].has(end)) return true;
+    return false;
+  }
 
+  insertEdge(start, end) {
+    if (this.findEdge(start, end)) return; 
+    this.insertNode(start, end);
+    return this;
+  }
+
+  removeEdge(start, end) {
+    if (!this.findEdge(start, end)) return;
+    this.nodes[start].delete(end);
+    return this;
+  }
+
+  getEdges(start) {
+    return [...this.nodes[start]];
+  }
+
+  getAllEdges() {
+    let result = [];
+    for (let nodeKey in this.nodes) {
+      for (let setKey of this.nodes[nodeKey]) {
+        result.push([nodeKey, setKey]);
+      }
+    }
+    return result;
   }
 }
 
 module.exports = { BinaryTree, BinarySearchTree, Graph }
-
-[1,2,3,4,5,6,2,3,4,1,5,4,7,8,4,13,14,3,1,2,6,4,5,4,1,23,4,3]
