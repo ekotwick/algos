@@ -213,26 +213,24 @@ describe('listOfDepths', () => {
 
   beforeEach(() => {
     BinarySearchTree.prototype.listOfDepths = listOfDepths;
-    {
-      tree1 = new BinarySearchTree();
-      let t1 = [0,1,2,3,4,5,6,7,8,9];
-      for (let i = 0; i < t1.length; i++) {
-        tree1.insert(t1[i]);
-      }
+
+    tree1 = new BinarySearchTree(0);
+    let t1 = [1,2,3,4,5,6,7,8,9];
+    for (let i = 0; i < t1.length; i++) {
+      tree1.insert(t1[i]);
     }
-    {
-      tree2 = new BinarySearchTree();
-      let t2 = [4,3,5,2,6,1,7,0,8];
-      for (let i = 0; i < t2.length; i++) {
-        tree1.insert(t2[i]);
-      }
+
+
+    tree2 = new BinarySearchTree(4);
+    let t2 = [3,5,2,6,1,7,0,8];
+    for (let i = 0; i < t2.length; i++) {
+      tree2.insert(t2[i]);
     }
-    {
-      tree3 = new BinarySearchTree();
-      let t3 = [4,2,8,1,3,5,0,6,7];
-      for (let i = 0; i < t3.length; i++) {
-        tree1.insert(t3[i]);
-      }
+
+    tree3 = new BinarySearchTree(4);
+    let t3 = [2,8,1,3,5,0,6,7];
+    for (let i = 0; i < t3.length; i++) {
+      tree3.insert(t3[i]);
     }
   });
 
@@ -245,25 +243,28 @@ describe('listOfDepths', () => {
     expect(t3).to.be.instanceof(Object);
   });
 
-  it('...which should have integers as keys and linked lists as values...', () => {
-    let tree1Keys = Object.keys(tree1);
-    let tree1Values = Object.values(tree1);
-    tree1Keys.forEach(k => expect(k).to.be.instanceof(Number));
-    tree1Values.forEach(v => expect(v).to.be.instanceof(LinkedList));
+  it('...which should have linked lists as values...', () => {
+    let t1 = tree1.listOfDepths();
+    let t1values = Object.values(t1);
+    t1values.forEach(v => expect(v).to.be.instanceof(LinkedList));
   });
 
   it('...and the linked list should contain only those values that occur at a given depth of the tree', () => {
     let test1 = {};
-    Object.keys(tree1).forEach((n,i,tree1) => {
-      test1[n] = tree1[n].print();
+
+    let t1 = tree1.listOfDepths();
+    let t2 = tree2.listOfDepths();
+    let t3 = tree3.listOfDepths();
+    Object.keys(t1).forEach((k,i,arr) => {
+      test1[k] = t1[k].printValues();
     });
     let test2 = {};
-    Object.keys(tree2).forEach((n,i,tree2) => {
-      test2[n] = tree1[n].print();
+    Object.keys(t2).forEach((k,i,arr) => {
+      test2[k] = t2[k].printValues();
     });
     let test3 = {};
-    Object.keys(tree3).forEach((n,i,tree3) => {
-      test3[n] = tree1[n].print();
+    Object.keys(t3).forEach((k,i,arr) => {
+      test3[k] = t3[k].printValues();
     });
     let expect1 = {
       '0': '0',

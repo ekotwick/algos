@@ -1,5 +1,8 @@
 'use strict';
 
+const LinkedList = require('./LinkedList').DoublyLinkedList;
+const LLNode = require('./LinkedList').dblLLNode;
+
 // ################################################## //
 // ################################################## //
 // ##########                              ########## //
@@ -123,10 +126,25 @@ function minimalTree (arr, start=0, end=arr.length) {
   return this;
 }
 
+function listOfDepths (depth=0, map={}) {
+  if (!map[depth]) {
+    map[depth] = new LinkedList();
+    map[depth].addToHead(this.value);
+  } else {
+    map[depth].addToTail(this.value);
+  }
+
+  depth++;
+  if (this.left) this.left.listOfDepths(depth, map);
+  if (this.right) this.right.listOfDepths(depth, map);
+
+  return map;
+}
+
 // ################################################## //
 // ################################################## //
 // ##########                              ########## //
-// ##########   BINARY SEARCH TREE FUNCS   ########## //
+// ##########             GRAPHS           ########## //
 // ##########                              ########## //
 // ################################################## //
 // ################################################## //
@@ -239,4 +257,4 @@ function findRoute(start, end) {
   return false;
 }
 
-module.exports = { BinaryTree, BinarySearchTree, Graph, findRoute, minimalTree }
+module.exports = { BinaryTree, BinarySearchTree, Graph, findRoute, minimalTree, listOfDepths }
