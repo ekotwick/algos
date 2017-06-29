@@ -2,6 +2,8 @@
 
 const expect = require('chai').expect;
 const assert = require('chai').assert;
+const LinkedList = require('./LinkedList').DoublyLinkedList;
+const LLNode = require('./LinkedList').dblLLNode;
 
 const path = require('./Trees&Graphs');
 
@@ -9,6 +11,7 @@ const Graph = path.Graph;
 const findRoute = path.findRoute;
 const BinaryTree = path.BinaryTree;
 const minimalTree = path.minimalTree;
+const listOfDepths = path.listOfDepths;
 const BinarySearchTree = path.BinarySearchTree;
 
 // ################################################## //
@@ -202,6 +205,95 @@ describe('minimalTree', () => {
     expect(tree.left.right.value).to.eql(4);
     expect(tree.right.right.value).to.eql(8);
     expect(tree.left.left.left.value).to.eql(1);
+  });
+});
+
+describe('listOfDepths', () => {
+  let tree1, tree2, tree3;
+
+  beforeEach(() => {
+    BinarySearchTree.prototype.listOfDepths = listOfDepths;
+    {
+      tree1 = new BinarySearchTree();
+      let t1 = [0,1,2,3,4,5,6,7,8,9];
+      for (let i = 0; i < t1.length; i++) {
+        tree1.insert(t1[i]);
+      }
+    }
+    {
+      tree2 = new BinarySearchTree();
+      let t2 = [4,3,5,2,6,1,7,0,8];
+      for (let i = 0; i < t2.length; i++) {
+        tree1.insert(t2[i]);
+      }
+    }
+    {
+      tree3 = new BinarySearchTree();
+      let t3 = [4,2,8,1,3,5,0,6,7];
+      for (let i = 0; i < t3.length; i++) {
+        tree1.insert(t3[i]);
+      }
+    }
+  });
+
+  it('should return an object...', () => {
+    let t1 = tree1.listOfDepths();
+    let t2 = tree2.listOfDepths();
+    let t3 = tree3.listOfDepths();
+    expect(t1).to.be.instanceof(Object);
+    expect(t2).to.be.instanceof(Object);
+    expect(t3).to.be.instanceof(Object);
+  });
+
+  it('...which should have integers as keys and linked lists as values...', () => {
+    let tree1Keys = Object.keys(tree1);
+    let tree1Values = Object.values(tree1);
+    tree1Keys.forEach(k => expect(k).to.be.instanceof(Number));
+    tree1Values.forEach(v => expect(v).to.be.instanceof(LinkedList));
+  });
+
+  it('...and the linked list should contain only those values that occur at a given depth of the tree', () => {
+    let test1 = {};
+    Object.keys(tree1).forEach((n,i,tree1) => {
+      test1[n] = tree1[n].print();
+    });
+    let test2 = {};
+    Object.keys(tree2).forEach((n,i,tree2) => {
+      test2[n] = tree1[n].print();
+    });
+    let test3 = {};
+    Object.keys(tree3).forEach((n,i,tree3) => {
+      test3[n] = tree1[n].print();
+    });
+    let expect1 = {
+      '0': '0',
+      '1': '1',
+      '2': '2',
+      '3': '3',
+      '4': '4',
+      '5': '5',
+      '6': '6',
+      '7': '7',
+      '8': '8',
+      '9': '9'
+    };
+    let expect2 = {
+      '0': '4',
+      '1': '35',
+      '2': '26',
+      '3': '17',
+      '4': '08',
+    };
+    let expect3 = {
+      '0': '4',
+      '1': '28',
+      '2': '135',
+      '3': '06',
+      '4': '7',
+    };
+    expect(test1).to.deep.equal(expect1);
+    expect(test2).to.deep.equal(expect2);
+    expect(test3).to.deep.equal(expect3);
   });
 });
 
