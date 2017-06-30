@@ -12,6 +12,7 @@ const findRoute = path.findRoute;
 const dftBalance = path.dftBalance;
 const BinaryTree = path.BinaryTree;
 const minimalTree = path.minimalTree;
+const validateBST = path.validateBST;
 const listOfDepths = path.listOfDepths;
 const checkBalance = path.checkBalance;
 const BinarySearchTree = path.BinarySearchTree;
@@ -341,10 +342,41 @@ describe('checkBalance', () => {
   });
 });
 
+describe('validateBST', () => {
+  let tree1, tree2, tree3, tree4;
+  let sortNums = (arr) => arr.sort((a,b) => a-b);
+  let t1 = [1,2,3,4,5,6,7,8,9,12,20,21,15,13];
+  let t2 = [3,5,2,6,1,7,0,8,12,20,21,15,13];
+  let t3 = [2,3,4,5,6,7,8,9,12,20,21,15,13];
+  let t4 = [5,2,6,1,7,0,8,12,20,21,15,13];
+
+  beforeEach(() => {
+    BinaryTree.prototype.validateBST = validateBST;
+    BinarySearchTree.prototype.validateBST = validateBST;
+
+    tree1 = new BinaryTree();
+    tree2 = new BinaryTree();
+    tree3 = new BinarySearchTree(1);
+    tree4 = new BinarySearchTree(3);
+
+    t1.forEach(n => tree1.insert(n));
+    t2.forEach(n => tree2.insert(n));
+    t3.forEach(n => tree3.insert(n));
+    t4.forEach(n => tree4.insert(n));
+  });
+
+  it('should return true if a given tree is a binary search tree and false otherwise', () => {
+    expect(tree1.validateBST()).to.not.deep.eql(sortNums(t1));
+    expect(tree2.validateBST()).to.not.deep.eql(sortNums(t2));
+    expect(tree3.validateBST()).to.deep.eql(sortNums(t1));
+    expect(tree4.validateBST()).to.deep.eql(sortNums(t2));
+  });
+});
+
 // ################################################## //
 // ################################################## //
 // ##########                              ########## //
-// ##########   BINARY SEARCH TREE FUNCS   ########## //
+// ##########             GRAPH            ########## //
 // ##########                              ########## //
 // ################################################## //
 // ################################################## //

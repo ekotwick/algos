@@ -170,6 +170,13 @@ function dftBalance(callback) {
   if (this.right) this.right.dftBalance(callback);
 }
 
+function validateBST() {
+  this.values = [];
+  const pusher = (val) => this.values.push(val);
+  this.dft(pusher, 'in-order');
+  return this.values;
+}
+
 // ################################################## //
 // ################################################## //
 // ##########                              ########## //
@@ -286,4 +293,4 @@ function findRoute(start, end) {
   return false;
 }
 
-module.exports = { BinaryTree, BinarySearchTree, Graph, findRoute, minimalTree, listOfDepths, checkBalance, dftBalance }
+module.exports = { BinaryTree, BinarySearchTree, Graph, findRoute, minimalTree, listOfDepths, checkBalance, dftBalance, validateBST }
