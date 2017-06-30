@@ -9,6 +9,7 @@ const path = require('./Trees&Graphs');
 
 const Graph = path.Graph;
 const findRoute = path.findRoute;
+const LinkedBST = path.LinkedBST;
 const dftBalance = path.dftBalance;
 const BinaryTree = path.BinaryTree;
 const minimalTree = path.minimalTree;
@@ -170,6 +171,22 @@ describe('BinarySearchTree', () => {
     expect(testArr).to.eql([15,5,25,0,14,17,28,1,13,21,50,12,45,11,30,35,33,31,34]);
   });
 });
+
+// describe('LinkedBST', () => {
+//   let linkedBST;
+
+//   beforeEach(() => {
+//     linkedBST = new LinkedBST(15);
+//     let valuesToInsert = [25, 5, 17, 21, 28, 0, 14, 50, 1, 45, 13, 12, 11, 30, 35, 33, 31, 34];
+//     for (let i = 0; i < valuesToInsert.length; i++) {
+//       linkedBST.insert(valuesToInsert[i]);
+//     }
+//   });
+
+//   it('should have a `parent` property on each of its nodes', () => {
+//     console.log(JSON.stringify(linkedBST, null, 2));
+//   })
+// });
 
 // ################################################## //
 // ################################################## //

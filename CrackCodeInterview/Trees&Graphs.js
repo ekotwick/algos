@@ -101,6 +101,24 @@ class BinarySearchTree extends BinaryTree {
   }
 }
 
+// class LinkedBST extends BinarySearchTree {
+//   constructor(val, parent=null) {
+//     super(val);
+//     this.parent = parent;
+//   }
+
+//   insert(val, parent) {
+//     this.length++;
+//     let dir = this.value > val ? 'left' : 'right';
+//     let newParent = this;
+//     if (this[dir]) {
+//       newParent = this[dir];
+//       newParent.insert(val, newParent);
+//     }
+//     else this[dir] = new LinkedBST(val, newParent);
+//   }
+// }
+
 // ################################################## //
 // ################################################## //
 // ##########                              ########## //
@@ -311,4 +329,4 @@ function findRoute(start, end) {
   return false;
 }
 
-module.exports = { BinaryTree, BinarySearchTree, Graph, findRoute, minimalTree, listOfDepths, checkBalance, dftBalance, validateBST }
+module.exports = { BinaryTree, BinarySearchTree, Graph, findRoute, minimalTree, listOfDepths, checkBalance, dftBalance, validateBST, LinkedBST }
