@@ -9,9 +9,11 @@ const path = require('./Trees&Graphs');
 
 const Graph = path.Graph;
 const findRoute = path.findRoute;
+const dftBalance = path.dftBalance;
 const BinaryTree = path.BinaryTree;
 const minimalTree = path.minimalTree;
 const listOfDepths = path.listOfDepths;
+const checkBalance = path.checkBalance;
 const BinarySearchTree = path.BinarySearchTree;
 
 // ################################################## //
@@ -171,7 +173,7 @@ describe('BinarySearchTree', () => {
 // ################################################## //
 // ################################################## //
 // ##########                              ########## //
-// ##########   BINARY SEARCH TREE FUNCS   ########## //
+// ##########       BINARY TREE FUNCS      ########## //
 // ##########                              ########## //
 // ################################################## //
 // ################################################## //
@@ -295,6 +297,47 @@ describe('listOfDepths', () => {
     expect(test1).to.deep.equal(expect1);
     expect(test2).to.deep.equal(expect2);
     expect(test3).to.deep.equal(expect3);
+  });
+});
+
+describe('checkBalance', () => {
+  let tree1, tree2, tree3, tree4, tree5;
+
+  beforeEach(() => {
+    BinarySearchTree.prototype.checkBalance = checkBalance;
+    BinarySearchTree.prototype.minimalTree = minimalTree;
+    BinarySearchTree.prototype.dftBalance = dftBalance;
+    BinarySearchTree.prototype.dftBalance = dftBalance;
+
+    tree1 = new BinarySearchTree(0);
+    let t1 = [1,2,3,4,5,6,7,8,9];
+    for (let i = 0; i < t1.length; i++) {
+      tree1.insert(t1[i]);
+    }
+
+
+    tree2 = new BinarySearchTree(4);
+    let t2 = [3,5,2,6,1,7,0,8];
+    for (let i = 0; i < t2.length; i++) {
+      tree2.insert(t2[i]);
+    }
+    // console.log(JSON.stringify(tree2, null, 2))
+
+    tree3 = new BinarySearchTree();
+    tree3.minimalTree([1,2,3,4,5,6,7]);
+
+    tree4 = new BinarySearchTree();
+    tree4.minimalTree([1,2,3,4,5,6,7,8]);
+
+    tree5 = new BinarySearchTree(5);
+  });
+
+  it('should return true if the heights of the two subtrees of any node never differ by more than one, and false otherwise', () => {
+    expect(tree1.checkBalance()).to.eql(false);
+    expect(tree2.checkBalance()).to.eql(false);
+    expect(tree3.checkBalance()).to.eql(true);
+    expect(tree4.checkBalance()).to.eql(true);
+    expect(tree5.checkBalance()).to.eql(true);
   });
 });
 

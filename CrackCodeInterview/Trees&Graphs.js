@@ -104,7 +104,7 @@ class BinarySearchTree extends BinaryTree {
 // ################################################## //
 // ################################################## //
 // ##########                              ########## //
-// ##########   BINARY SEARCH TREE FUNCS   ########## //
+// ##########       BINARY TREE FUNCS      ########## //
 // ##########                              ########## //
 // ################################################## //
 // ################################################## //
@@ -139,6 +139,35 @@ function listOfDepths (depth=0, map={}) {
   if (this.right) this.right.listOfDepths(depth, map);
 
   return map;
+}
+
+function checkBalance () { // function declaration to deal with `this` context
+  this.values = [];
+
+  const pusher = (left, right) => { // arrow function to deal with `this` context
+    if (left && !right) {
+      if (left.length > 1) this.values.push(false);
+    } else if (!left && right) {
+      if (right.length > 1) this.values.push(false);
+    } else if (!left && !right) {
+      this.values.push(true);
+    } else {
+      if (Math.abs(left.length - right.length) > 1) this.values.push(false);
+      else this.values.push(true);
+    }
+  };
+
+  this.dftBalance(pusher);
+
+  const combiner = (el1, el2) => el1 && el2;
+
+  return this.values.reduce((el1, el2) => combiner(el1, el2), true); // assume true until proven otherwise
+}
+
+function dftBalance(callback) {
+  callback(this.left, this.right);
+  if (this.left) this.left.dftBalance(callback);
+  if (this.right) this.right.dftBalance(callback);
 }
 
 // ################################################## //
@@ -257,4 +286,4 @@ function findRoute(start, end) {
   return false;
 }
 
-module.exports = { BinaryTree, BinarySearchTree, Graph, findRoute, minimalTree, listOfDepths }
+module.exports = { BinaryTree, BinarySearchTree, Graph, findRoute, minimalTree, listOfDepths, checkBalance, dftBalance }
