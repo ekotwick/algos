@@ -173,6 +173,10 @@ function dftBalance(callback) {
 }
 // CHECK BALANCE END
 
+// VALIDATEBST BEGIN
+// this implementation works on the assumption that there are no duplicate values in the BST. 
+// further, it requires sorting an array of numbers, which can potentially be very costly. 
+// it would be better not to store an array of values, but instead a variable that referenced a single value: at each recursive call we would could the present numnber with the store number, and if ever the store number is *greater* than the present, we return false (or throw an error message as before)
 function validateBST() {
   this.values = [];
 
@@ -189,6 +193,7 @@ function validateBST() {
   }
   return true;
 }
+// VALIDATEBST END
 
 // ################################################## //
 // ################################################## //
