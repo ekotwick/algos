@@ -140,7 +140,9 @@ function listOfDepths (depth=0, map={}) {
 
   return map;
 }
-
+// CHECKBALANCE BEGIN
+// the present implementation will run through the whole tree; 
+// if instead of pushing `false` into `this.values` we throw an error code for conditions that return false, we no longer have to traverse over the entire tree.
 function checkBalance () { // function declaration to deal with `this` context
   this.values = [];
 
@@ -169,6 +171,7 @@ function dftBalance(callback) {
   if (this.left) this.left.dftBalance(callback);
   if (this.right) this.right.dftBalance(callback);
 }
+// CHECK BALANCE END
 
 function validateBST() {
   this.values = [];
