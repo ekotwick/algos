@@ -172,9 +172,19 @@ function dftBalance(callback) {
 
 function validateBST() {
   this.values = [];
+
+  const sortNums = (arr) => arr.sort((a,b) => a-b);
   const pusher = (val) => this.values.push(val);
+
   this.dft(pusher, 'in-order');
-  return this.values;
+  
+  let arr = this.values;
+  for (let i = 0; i < arr.length; i++) {
+    let a = arr[i];
+    let b = sortNums(arr)[i];
+    if (a !== b) return false;
+  }
+  return true;
 }
 
 // ################################################## //
