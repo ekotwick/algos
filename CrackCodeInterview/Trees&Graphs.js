@@ -329,4 +329,4 @@ function findRoute(start, end) {
   return false;
 }
 
-module.exports = { BinaryTree, BinarySearchTree, Graph, findRoute, minimalTree, listOfDepths, checkBalance, dftBalance, validateBST, LinkedBST }
+module.exports = { BinaryTree, BinarySearchTree, Graph, findRoute, minimalTree, listOfDepths, checkBalance, dftBalance, validateBST }
